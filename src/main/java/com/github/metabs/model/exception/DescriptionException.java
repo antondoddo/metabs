@@ -1,0 +1,12 @@
+package com.github.metabs.model.exception;
+
+public class DescriptionException extends RuntimeException {
+
+  private DescriptionException(String message) {
+    super(message);
+  }
+
+  public static DescriptionException empty() {
+    return new DescriptionException("Inserire una descrizione!");
+  }
+}
