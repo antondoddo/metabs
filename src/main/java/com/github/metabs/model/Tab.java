@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public class Tab {
   private UUID id;
-  private LocalDateTime created;
   private Name name;
   private URL link;
   private Description description;
+  private LocalDateTime created;
   private LocalDateTime updated;
   private LocalDateTime trashed;
 

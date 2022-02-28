@@ -8,12 +8,11 @@ import java.util.UUID;
 public class Collection {
 
   private UUID id;
-  private LocalDateTime created;
   private Name name;
   private Description description;
+  private LocalDateTime created;
   private LocalDateTime updated;
   private LocalDateTime trashed;
-
 
   private Collection(
       UUID id, Name name, Description description,
@@ -21,10 +20,10 @@ public class Collection {
   ) {
     this.id = id;
     this.name = name;
-    this.trashed = trashed;
+    this.description = description;
     this.created = created;
     this.updated = updated;
-    this.description = description;
+    this.trashed = trashed;
   }
 
   public static Collection createCollection(
