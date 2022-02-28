@@ -2,7 +2,8 @@ package com.github.metabs.model;
 
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,24 +11,78 @@ import org.junit.Test;
 public class CollectionTest {
 
   @Test
-  public void createCollectionShouldReturnSameArgumentsAsInjected() {
-
-    Calendar deleted = Calendar.getInstance();
-    deleted.setTimeInMillis(3600);
-    Calendar created = Calendar.getInstance();
-    created.setTimeInMillis(4500);
-    Calendar updated = Calendar.getInstance();
-    updated.setTimeInMillis(5600);
-    Description description = new Description("Description");
+  public void createCollectionShouldReturnSameArgumentsAsInjected() throws Exception {
     UUID id = UUID.randomUUID();
-    Name name = new Name("Collection");
-    Collection collection = Collection.createCollection(id, name, deleted, created,
-        updated, description);
+    Name name = ObjectMother.generateRandomName();
+    Description description = ObjectMother.generateRandomDescription();
+
+    Collection collection = Collection.createCollection(id, name, description);
+
     Assert.assertEquals(id, collection.getId());
     Assert.assertEquals(name, collection.getName());
-    Assert.assertEquals(deleted, collection.getDeleted());
-    Assert.assertEquals(created, collection.getCreated());
-    Assert.assertEquals(updated, collection.getUpdated());
     Assert.assertEquals(description, collection.getDescription());
+    Assert.assertEquals(
+        collection.getCreated().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
+    Assert.assertNull(collection.getUpdated());
+    Assert.assertNull(collection.getTrashed());
+
+  }
+
+  @Test
+  public void shouldRename() throws Exception {
+    Collection collection = Collection.createCollection(
+        UUID.randomUUID(),
+        ObjectMother.generateRandomName(),
+        ObjectMother.generateRandomDescription()
+    );
+
+    Name randomName = ObjectMother.generateRandomName();
+    collection.rename(randomName);
+
+    Assert.assertEquals(randomName, collection.getName());
+    Assert.assertEquals(
+        collection.getUpdated().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
+  }
+
+  @Test
+  public void shouldChangeDescription() throws Exception {
+    Collection collection = Collection.createCollection(
+        UUID.randomUUID(),
+        ObjectMother.generateRandomName(),
+        ObjectMother.generateRandomDescription()
+    );
+
+    Description randomDescription = ObjectMother.generateRandomDescription();
+    collection.changeDescription(randomDescription);
+
+    Assert.assertEquals(randomDescription, collection.getDescription());
+    Assert.assertEquals(
+        collection.getUpdated().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
+  }
+
+  @Test
+  public void shouldBeMovedToBin() throws Exception {
+    Collection collection = Collection.createCollection(
+        UUID.randomUUID(),
+        ObjectMother.generateRandomName(),
+        ObjectMother.generateRandomDescription()
+    );
+
+    collection.moveToBin();
+
+    Assert.assertEquals(
+        collection.getTrashed().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
   }
 }

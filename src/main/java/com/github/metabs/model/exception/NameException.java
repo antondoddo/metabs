@@ -1,6 +1,6 @@
 package com.github.metabs.model.exception;
 
-public class NameException extends RuntimeException {
+public class NameException extends Exception {
 
   private NameException(String message) {
     super(message);

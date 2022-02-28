@@ -6,7 +6,7 @@ public class Description {
 
   private final String value;
 
-  public Description(String value) {
+  public Description(String value) throws DescriptionException {
     if (value == null || value.isEmpty()) {
       throw DescriptionException.empty();
     }

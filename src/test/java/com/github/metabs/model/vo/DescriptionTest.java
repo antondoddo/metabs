@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 public class DescriptionTest {
 
   @Test
-  public void shouldReturnValue() {
+  public void shouldReturnValue() throws DescriptionException {
     Description description = new Description("Questa è una collection!");
     Assert.assertEquals(description.getValue(), "Questa è una collection!");
   }
@@ -22,7 +22,7 @@ public class DescriptionTest {
   }
 
   @Test
-  public void shouldBeEquals() {
+  public void shouldBeEquals() throws DescriptionException {
     Description description1 = new Description("Descrizione");
     Description description2 = new Description("Descrizione");
     Assert.assertEquals(description1, description2);

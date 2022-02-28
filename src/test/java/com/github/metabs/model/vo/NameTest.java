@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 public class NameTest {
 
   @Test
-  public void shouldReturnValue() {
+  public void shouldReturnValue() throws NameException {
     Name name = new Name("Personal");
     Assert.assertSame(name.getValue(), "Personal");
   }
@@ -32,7 +32,7 @@ public class NameTest {
   }
 
   @Test
-  public void shouldBeEquals() {
+  public void shouldBeEquals() throws NameException {
     Name name1 = new Name("Personal");
     Name name2 = new Name("Personal");
     Assert.assertEquals(name1, name2);
