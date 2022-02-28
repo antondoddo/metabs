@@ -6,7 +6,7 @@ public class Name {
   private final String value;
 
 
-  public Name(String value) {
+  public Name(String value) throws NameException {
     if (value == null || value.isEmpty()) {
       throw NameException.empty();
     }

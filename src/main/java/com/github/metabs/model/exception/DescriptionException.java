@@ -1,6 +1,6 @@
 package com.github.metabs.model.exception;
 
-public class DescriptionException extends RuntimeException {
+public class DescriptionException extends Exception {
 
   private DescriptionException(String message) {
     super(message);

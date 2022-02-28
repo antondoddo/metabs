@@ -2,35 +2,40 @@ package com.github.metabs.model;
 
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Collection {
 
+public class Tab {
   private UUID id;
   private Name name;
+  private URL link;
   private Description description;
   private LocalDateTime created;
   private LocalDateTime updated;
   private LocalDateTime trashed;
 
-  private Collection(
-      UUID id, Name name, Description description,
-      LocalDateTime created, LocalDateTime updated, LocalDateTime trashed
+  private Tab(
+      UUID id, Name name, URL link, Description description, LocalDateTime created,
+      LocalDateTime updated, LocalDateTime trashed
   ) {
     this.id = id;
     this.name = name;
+    this.link = link;
     this.description = description;
     this.created = created;
     this.updated = updated;
     this.trashed = trashed;
+
   }
 
-  public static Collection createCollection(
-      UUID id, Name name, Description description) {
-    return new Collection(
+  public static Tab createTab(
+      UUID id, Name name, URL link, Description description) {
+    return new Tab(
         id,
         name,
+        link,
         description,
         LocalDateTime.now(),
         null,
@@ -44,6 +49,11 @@ public class Collection {
   public Name getName() {
     return name;
   }
+
+  public URL getLink() {
+    return link;
+  }
+
 
   public LocalDateTime getTrashed() {
     return trashed;
@@ -61,8 +71,14 @@ public class Collection {
     return description;
   }
 
+
   public void rename(Name name) {
     this.name = name;
+    this.updated = LocalDateTime.now();
+  }
+
+  public void changeLink(URL link) {
+    this.link = link;
     this.updated = LocalDateTime.now();
   }
 
@@ -74,5 +90,4 @@ public class Collection {
   public void moveToBin() {
     this.trashed = LocalDateTime.now();
   }
-
 }
