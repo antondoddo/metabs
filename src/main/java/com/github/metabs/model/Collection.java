@@ -4,15 +4,10 @@ import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.data.neo4j.core.schema.Node;
 
-public class Collection {
-
-  private UUID id;
-  private Name name;
-  private Description description;
-  private LocalDateTime created;
-  private LocalDateTime updated;
-  private LocalDateTime trashed;
+@Node("Collection")
+public class Collection extends Element {
 
   private Collection(
       UUID id, Name name, Description description,
@@ -36,43 +31,4 @@ public class Collection {
         null,
         null);
   }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public Name getName() {
-    return name;
-  }
-
-  public LocalDateTime getTrashed() {
-    return trashed;
-  }
-
-  public LocalDateTime getCreated() {
-    return created;
-  }
-
-  public LocalDateTime getUpdated() {
-    return updated;
-  }
-
-  public Description getDescription() {
-    return description;
-  }
-
-  public void rename(Name name) {
-    this.name = name;
-    this.updated = LocalDateTime.now();
-  }
-
-  public void changeDescription(Description description) {
-    this.description = description;
-    this.updated = LocalDateTime.now();
-  }
-
-  public void moveToBin() {
-    this.trashed = LocalDateTime.now();
-  }
-
 }
