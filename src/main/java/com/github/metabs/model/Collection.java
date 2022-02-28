@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class Collection {
 
-  private final UUID id;
-  private final LocalDateTime created;
+  private UUID id;
+  private LocalDateTime created;
   private Name name;
   private Description description;
   private LocalDateTime updated;

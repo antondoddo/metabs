@@ -8,8 +8,8 @@ import java.util.UUID;
 
 
 public class Tab {
-  private final UUID id;
-  private final LocalDateTime created;
+  private UUID id;
+  private LocalDateTime created;
   private Name name;
   private URL link;
   private Description description;
