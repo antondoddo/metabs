@@ -5,16 +5,12 @@ import com.github.metabs.model.vo.Name;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.data.neo4j.core.schema.Node;
 
+@Node("Tab")
+public class Tab extends Element {
 
-public class Tab {
-  private UUID id;
-  private Name name;
   private URL link;
-  private Description description;
-  private LocalDateTime created;
-  private LocalDateTime updated;
-  private LocalDateTime trashed;
 
   private Tab(
       UUID id, Name name, URL link, Description description, LocalDateTime created,
@@ -42,39 +38,8 @@ public class Tab {
         null);
   }
 
-  public UUID getId() {
-    return id;
-  }
-
-  public Name getName() {
-    return name;
-  }
-
   public URL getLink() {
     return link;
-  }
-
-
-  public LocalDateTime getTrashed() {
-    return trashed;
-  }
-
-  public LocalDateTime getCreated() {
-    return created;
-  }
-
-  public LocalDateTime getUpdated() {
-    return updated;
-  }
-
-  public Description getDescription() {
-    return description;
-  }
-
-
-  public void rename(Name name) {
-    this.name = name;
-    this.updated = LocalDateTime.now();
   }
 
   public void changeLink(URL link) {
@@ -82,12 +47,4 @@ public class Tab {
     this.updated = LocalDateTime.now();
   }
 
-  public void changeDescription(Description description) {
-    this.description = description;
-    this.updated = LocalDateTime.now();
-  }
-
-  public void moveToBin() {
-    this.trashed = LocalDateTime.now();
-  }
 }
