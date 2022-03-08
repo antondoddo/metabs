@@ -2,14 +2,17 @@ package com.github.metabs.model;
 
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
+import com.github.metabs.model.vo.converter.UrlConverter;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Node;
 
 @Node("Tab")
 public class Tab extends Element {
 
+  @ConvertWith(converter = UrlConverter.class)
   private URL link;
 
   private Tab(
