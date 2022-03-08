@@ -17,7 +17,7 @@ public class ObjectMother {
   }
 
   public static URL generateRandomLink() throws MalformedURLException {
-    return new URL("Https://" + faker.internet().url());
+    return new URL("https://" + faker.internet().url());
   }
 
   public static Description generateRandomDescription() throws DescriptionException {
