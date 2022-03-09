@@ -16,10 +16,11 @@ public class Tab extends Element {
   private URL link;
 
   private Tab(
-      UUID id, Name name, URL link, Description description, LocalDateTime created,
+      UUID id, Collection parentCollection, Name name, URL link, Description description, LocalDateTime created,
       LocalDateTime updated, LocalDateTime trashed
   ) {
     this.id = id;
+    this.parentCollection = parentCollection;
     this.name = name;
     this.link = link;
     this.description = description;
@@ -33,6 +34,20 @@ public class Tab extends Element {
       UUID id, Name name, URL link, Description description) {
     return new Tab(
         id,
+        null,
+        name,
+        link,
+        description,
+        LocalDateTime.now(),
+        null,
+        null);
+  }
+
+  public static Tab createTabWithParent(
+      UUID id, Collection parentCollection, Name name, URL link, Description description) {
+    return new Tab(
+        id,
+        parentCollection,
         name,
         link,
         description,

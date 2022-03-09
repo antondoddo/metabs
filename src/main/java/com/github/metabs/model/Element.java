@@ -8,12 +8,16 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 @org.springframework.data.neo4j.core.schema.Node("Element")
 public abstract class Element implements Node {
 
   @Id
   protected UUID id;
+
+  @Relationship(type = "HAS_PARENT", direction = Relationship.Direction.OUTGOING)
+  protected Collection parentCollection;
 
   @ConvertWith(converter = NameConverter.class)
   protected Name name;
@@ -27,6 +31,11 @@ public abstract class Element implements Node {
 
   public UUID getId() {
     return id;
+  }
+
+
+  public Collection getParentCollection() {
+    return parentCollection;
   }
 
   public Name getName() {
