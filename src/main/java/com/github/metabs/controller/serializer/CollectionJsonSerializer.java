@@ -21,6 +21,13 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     gen.writeStringField(
         "id",
         value.getId().toString());
+    if (value.getParentCollection() != null) {
+      gen.writeStringField(
+          "parent_id",
+          value.getParentCollection().toString());
+    } else {
+      gen.writeNullField("parent_id");
+    }
     gen.writeStringField(
         "name",
         value.getName().getValue());
@@ -49,7 +56,6 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     } else {
       gen.writeNullField("trashed");
     }
-
     gen.writeEndObject();
   }
 }
