@@ -1,20 +1,17 @@
 package com.github.metabs.controller;
 
-import com.github.metabs.model.Collection;
 import com.github.metabs.model.Element;
-import com.github.metabs.model.Tab;
-import com.github.metabs.model.dto.ElementDTO;
+import com.github.metabs.model.dto.ElementDto;
 import com.github.metabs.model.exception.DescriptionException;
 import com.github.metabs.model.exception.NameException;
-import com.github.metabs.model.vo.Description;
-import com.github.metabs.model.vo.Name;
-import com.github.metabs.repository.CollectionRepository;
-import com.github.metabs.repository.ElementRepository;
+import com.github.metabs.service.ElementService;
+import com.github.metabs.service.exception.ParentNotFoundException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,68 +25,50 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollectionController {
 
   @Autowired
-  ElementRepository elementRepository;
-
-  @Autowired
-  CollectionRepository collectionRepository;
+  ElementService elementService;
 
   @GetMapping("/{id}")
-  public Optional<Element> getElementById(@PathVariable UUID id) {
-    return elementRepository.findById(id);
+  public ResponseEntity<Element> getElementById(@PathVariable UUID id) {
+    try {
+      Optional<Element> element = elementService.getElementById(id);
+      if (!element.isPresent()) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      Element trueElement = element.get();
+      return new ResponseEntity<>(trueElement, HttpStatus.OK);
+    } catch (Exception ex) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @PostMapping("/")
   @ResponseBody
-  public Element saveElement(@RequestBody ElementDTO elementDTO) throws
-      DescriptionException,
-      NameException,
-      MalformedURLException {
-    Element element;
-    if (elementDTO.getLink() == null) {
-      UUID id = UUID.randomUUID();
-      element = Collection.createCollection(
-          id,
-          new Name(elementDTO.getName()),
-          new Description(elementDTO.getDescription())
-      );
-
-    } else {
-      UUID id2 = UUID.randomUUID();
-      element = Tab.createTab(id2, new Name(elementDTO.getName()),
-          new URL(elementDTO.getLink()), new Description(elementDTO.getDescription()));
-
+  public ResponseEntity<Element> saveElement(@RequestBody ElementDto elementDto) {
+    try {
+      return new ResponseEntity<>(elementService.saveElement(elementDto), HttpStatus.CREATED);
+    } catch (DescriptionException | NameException | MalformedURLException ex) {
+      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+    } catch (Exception ex) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return elementRepository.save(element);
   }
+
 
   @PostMapping("/{id}")
   @ResponseBody
-  public Element saveElementWithParent(@RequestBody ElementDTO elementDTO,
-                                       @PathVariable("id") UUID parentCollectionId) throws
-      DescriptionException,
-      NameException,
-      MalformedURLException {
-
-    Optional<Collection> parentCollection = collectionRepository.findById(parentCollectionId);
-    if (!parentCollection.isPresent()) {
-      return null; // TODO RETURN 404
+  public ResponseEntity<Element> saveElementWithParent(
+      @RequestBody ElementDto elementDto,
+      @PathVariable("id") UUID parentCollectionId
+  ) {
+    try {
+      return new ResponseEntity<>(elementService.saveElementWithParent(elementDto,
+          parentCollectionId), HttpStatus.CREATED);
+    } catch (DescriptionException | NameException | MalformedURLException ex) {
+      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+    } catch (ParentNotFoundException ex) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception ex) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    Element element;
-    if (elementDTO.getLink() == null) {
-      UUID id = UUID.randomUUID();
-      element = Collection.createCollectionWithParent(
-          id,
-          parentCollection.get(),
-          new Name(elementDTO.getName()),
-          new Description(elementDTO.getDescription())
-      );
-
-    } else {
-      UUID id2 = UUID.randomUUID();
-      element = Tab.createTabWithParent(id2, parentCollection.get(), new Name(elementDTO.getName()),
-          new URL(elementDTO.getLink()), new Description(elementDTO.getDescription()));
-    }
-    return elementRepository.save(element);
   }
 }

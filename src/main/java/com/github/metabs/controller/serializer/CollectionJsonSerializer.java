@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.github.metabs.model.Collection;
-import org.springframework.boot.jackson.JsonComponent;
-
 import java.io.IOException;
+import org.springframework.boot.jackson.JsonComponent;
 
 @JsonComponent
 public class CollectionJsonSerializer extends JsonSerializer<Collection> {

@@ -1,13 +1,13 @@
 package com.github.metabs.model.dto;
 
-public class ElementDTO {
+public class ElementDto {
 
   private String name;
   private String description;
   private String link;
 
 
-  public ElementDTO(String name, String description, String link) {
+  public ElementDto(String name, String description, String link) {
     this.name = name;
     this.description = description;
     this.link = link;

@@ -6,7 +6,8 @@ import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.value.StringValue;
 import org.springframework.data.neo4j.core.convert.Neo4jPersistentPropertyConverter;
 
-public class ParentCollectionIdConverter implements Neo4jPersistentPropertyConverter<ParentCollectionId> {
+public class ParentCollectionIdConverter implements
+    Neo4jPersistentPropertyConverter<ParentCollectionId> {
   @Override
   public Value write(ParentCollectionId source) {
     if (source != null) {

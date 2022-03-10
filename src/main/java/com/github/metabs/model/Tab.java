@@ -16,7 +16,8 @@ public class Tab extends Element {
   private URL link;
 
   private Tab(
-      UUID id, Collection parentCollection, Name name, URL link, Description description, LocalDateTime created,
+      UUID id, Collection parentCollection, Name name,
+      URL link, Description description, LocalDateTime created,
       LocalDateTime updated, LocalDateTime trashed
   ) {
     this.id = id;
