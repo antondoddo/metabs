@@ -23,7 +23,7 @@ public class TabJsonSerializer extends JsonSerializer<Tab> {
     if (value.getParentCollection() != null) {
       gen.writeStringField(
           "parent_id",
-          value.getParentCollection().toString());
+          value.getParentCollection().getId().toString());
     } else {
       gen.writeNullField("parent_id");
     }
