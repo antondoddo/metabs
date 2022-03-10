@@ -35,7 +35,7 @@ public class CollectionController {
 
   @GetMapping("/{id}")
   public Optional<Element> getElementById(@PathVariable UUID id) {
-    return elementRepository.findElementWithParent(id);
+    return elementRepository.findById(id);
   }
 
   @PostMapping("/")
@@ -70,7 +70,7 @@ public class CollectionController {
       NameException,
       MalformedURLException {
 
-    Optional<Collection> parentCollection = collectionRepository.findCollectionWithParent(parentCollectionId);
+    Optional<Collection> parentCollection = collectionRepository.findById(parentCollectionId);
     if (!parentCollection.isPresent()) {
       return null; // TODO RETURN 404
     }
