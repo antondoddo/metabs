@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.github.metabs.model.Collection;
-import java.io.IOException;
 import org.springframework.boot.jackson.JsonComponent;
+
+import java.io.IOException;
 
 @JsonComponent
 public class CollectionJsonSerializer extends JsonSerializer<Collection> {
@@ -24,7 +25,7 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     if (value.getParentCollection() != null) {
       gen.writeStringField(
           "parent_id",
-          value.getParentCollection().toString());
+          value.getParentCollection().getId().toString());
     } else {
       gen.writeNullField("parent_id");
     }
