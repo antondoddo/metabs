@@ -5,11 +5,9 @@ import javax.persistence.Converter;
 
 @Converter
 public class LoggerDecoratorConverter<X, Y> implements AttributeConverter<X, Y> {
-
   private final AttributeConverter<X, Y> baseAttributeConverter;
 
   public LoggerDecoratorConverter(AttributeConverter<X, Y> baseAttributeConverter) {
-
     this.baseAttributeConverter = baseAttributeConverter;
   }
 

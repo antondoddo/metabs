@@ -45,7 +45,10 @@ public class CollectionController {
   @ResponseBody
   public ResponseEntity<Element> saveElement(@RequestBody ElementDto elementDto) {
     try {
-      return new ResponseEntity<>(elementService.saveElement(elementDto), HttpStatus.CREATED);
+      return new ResponseEntity<>(
+          elementService.saveElement(elementDto),
+          HttpStatus.CREATED
+      );
     } catch (DescriptionException | NameException | MalformedURLException ex) {
       return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     } catch (Exception ex) {
@@ -61,8 +64,10 @@ public class CollectionController {
       @PathVariable("id") UUID parentCollectionId
   ) {
     try {
-      return new ResponseEntity<>(elementService.saveElementWithParent(elementDto,
-          parentCollectionId), HttpStatus.CREATED);
+      return new ResponseEntity<>(
+          elementService.saveElementWithParent(elementDto, parentCollectionId),
+          HttpStatus.CREATED
+      );
     } catch (DescriptionException | NameException | MalformedURLException ex) {
       return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     } catch (ParentNotFoundException ex) {
