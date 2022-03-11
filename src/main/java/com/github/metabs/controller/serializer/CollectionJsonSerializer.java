@@ -12,47 +12,47 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
 
   @Override
   public void serialize(
-      Collection value,
-      JsonGenerator gen,
-      SerializerProvider serializers
+          Collection value,
+          JsonGenerator gen,
+          SerializerProvider serializers
   ) throws IOException {
 
     gen.writeStartObject();
     gen.writeStringField(
-        "id",
-        value.getId().toString());
+            "id",
+            value.getId().toString());
     if (value.getParentCollection() != null) {
       gen.writeStringField(
-          "parent_id",
-          value.getParentCollection().getId().toString());
+              "parent_id",
+              value.getParentCollection().getId().toString());
     } else {
       gen.writeNullField("parent_id");
     }
     gen.writeStringField(
-        "name",
-        value.getName().getValue());
+            "name",
+            value.getName().getValue());
     if (value.getDescription() != null) {
       gen.writeStringField(
-          "description",
-          value.getDescription().getValue());
+              "description",
+              value.getDescription().getValue());
     } else {
       gen.writeNullField("description");
     }
     gen.writeStringField(
-        "created",
-        value.getCreated().toString());
+            "created",
+            value.getCreated().toString());
     if (value.getUpdated() != null) {
       gen.writeStringField(
-          "updated",
-          value.getUpdated().toString());
+              "updated",
+              value.getUpdated().toString());
     } else {
       gen.writeNullField("updated");
     }
 
     if (value.getTrashed() != null) {
       gen.writeStringField(
-          "trashed",
-          value.getTrashed().toString());
+              "trashed",
+              value.getTrashed().toString());
     } else {
       gen.writeNullField("trashed");
     }

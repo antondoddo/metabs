@@ -25,9 +25,9 @@ public class TabTest {
     Assert.assertEquals(link, tab.getLink());
     Assert.assertEquals(description, tab.getDescription());
     Assert.assertEquals(
-        tab.getCreated().toEpochSecond(ZoneOffset.UTC),
-        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-        3
+            tab.getCreated().toEpochSecond(ZoneOffset.UTC),
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            3
     );
     Assert.assertNull(tab.getUpdated());
     Assert.assertNull(tab.getTrashed());
@@ -36,70 +36,70 @@ public class TabTest {
   @Test
   public void shouldRename() throws Exception {
     Tab tab = Tab.createTab(
-        UUID.randomUUID(),
-        ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+            UUID.randomUUID(),
+            ObjectMother.generateRandomName(),
+            ObjectMother.generateRandomLink(),
+            ObjectMother.generateRandomDescription()
     );
     Name randomName = ObjectMother.generateRandomName();
     tab.rename(randomName);
     Assert.assertEquals(randomName, tab.getName());
     Assert.assertEquals(
-        tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
-        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-        3
+            tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            3
     );
   }
 
   @Test
   public void shouldChangeLink() throws Exception {
     Tab tab = Tab.createTab(
-        UUID.randomUUID(),
-        ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+            UUID.randomUUID(),
+            ObjectMother.generateRandomName(),
+            ObjectMother.generateRandomLink(),
+            ObjectMother.generateRandomDescription()
     );
     URL randomLink = ObjectMother.generateRandomLink();
     tab.changeLink(randomLink);
     Assert.assertEquals(randomLink, tab.getLink());
     Assert.assertEquals(
-        tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
-        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-        3
+            tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            3
     );
   }
 
   @Test
   public void shouldChangeDescription() throws Exception {
     Tab tab = Tab.createTab(
-        UUID.randomUUID(),
-        ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+            UUID.randomUUID(),
+            ObjectMother.generateRandomName(),
+            ObjectMother.generateRandomLink(),
+            ObjectMother.generateRandomDescription()
     );
     Description randomDescription = ObjectMother.generateRandomDescription();
     tab.changeDescription(randomDescription);
     Assert.assertEquals(randomDescription, tab.getDescription());
     Assert.assertEquals(
-        tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
-        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-        3
+            tab.getUpdated().toEpochSecond(ZoneOffset.UTC),
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            3
     );
   }
 
   @Test
   public void shouldBeMovedToBin() throws Exception {
     Tab tab = Tab.createTab(
-        UUID.randomUUID(),
-        ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+            UUID.randomUUID(),
+            ObjectMother.generateRandomName(),
+            ObjectMother.generateRandomLink(),
+            ObjectMother.generateRandomDescription()
     );
     tab.moveToBin();
     Assert.assertEquals(
-        tab.getTrashed().toEpochSecond(ZoneOffset.UTC),
-        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-        3
+            tab.getTrashed().toEpochSecond(ZoneOffset.UTC),
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            3
     );
   }
 }

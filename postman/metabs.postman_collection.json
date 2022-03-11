@@ -1,0 +1,768 @@
+{
+	"info": {
+		"_postman_id": "3182192a-fcae-4c02-a641-5bd95e8eca42",
+		"name": "metabs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Elements",
+			"item": [
+				{
+					"name": "Add collection element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Collection id is not null\", function () {",
+									"    pm.expect(jsonResponseData.id ==null).to.be.false",
+									"});",
+									"",
+									"pm.test(\"Collection parent id is null\", function () {",
+									"    pm.expect(jsonResponseData.parent_id).to.eql(null);",
+									"});",
+									"",
+									"let collectionName = pm.variables.get(\"collection_name\");",
+									"pm.test(\"Collection name matches:`\"+collectionName+\"`\", function () {",
+									"    pm.expect(jsonResponseData.name).to.eql(collectionName);",
+									"});",
+									"",
+									"let collectionDescription = pm.variables.get(\"collection_description\");",
+									"pm.test(\"Collection description matches:`\"+collectionDescription+\"`\", function () {",
+									"    pm.expect(jsonResponseData.description).to.eql(collectionDescription);",
+									"});",
+									"",
+									"pm.test(\"Collection created is not in the future\", function () {",
+									"    const moment = require('moment')",
+									"    ",
+									"    let now  = moment()",
+									"    let created = moment(jsonResponseData.created)",
+									"    ",
+									"    pm.expect(created.isBefore(now)).to.be.true",
+									"    pm.expect(created.isAfter(now.subtract(15, 'seconds'))).to.be.true",
+									"});",
+									"",
+									"pm.test(\"Collection updated is null\", function () {",
+									"    pm.expect(jsonResponseData.updated).to.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Collection trashed is null\", function () {",
+									"    pm.expect(jsonResponseData.trashed).to.eql(null);",
+									"});",
+									"",
+									"// Set new vars",
+									"pm.globals.set(\"latest_created_collection_id\", jsonResponseData.id);",
+									"pm.globals.set(\"latest_created_collection_json\", jsonResponseData);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"collection_name\", \"Root Collection\");",
+									"pm.variables.set(\"collection_description\", \"This is a root collection\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{collection_name}}\",\n    \"description\": \"{{collection_description}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get early created collection element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Collection json resposne body is the same as the one received during the creation\", function () {",
+									"    pm.expect(jsonResponseData).to.eql(pm.globals.get(\"latest_created_collection_json\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_collection_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_collection_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add tab element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Tab id is not null\", function () {",
+									"    pm.expect(jsonResponseData.id ==null).to.be.false",
+									"});",
+									"",
+									"pm.test(\"Tab parent id is null\", function () {",
+									"    pm.expect(jsonResponseData.parent_id).to.eql(null);",
+									"});",
+									"",
+									"let tabName = pm.variables.get(\"tab_name\");",
+									"pm.test(\"Tab name matches:`\"+tabName+\"`\", function () {",
+									"    pm.expect(jsonResponseData.name).to.eql(tabName);",
+									"});",
+									"",
+									"let tabDescription = pm.variables.get(\"tab_description\");",
+									"pm.test(\"Tab description matches:`\"+tabDescription+\"`\", function () {",
+									"    pm.expect(jsonResponseData.description).to.eql(tabDescription);",
+									"});",
+									"",
+									"let tabLink = pm.variables.get(\"tab_link\");",
+									"pm.test(\"Tab link matches:`\"+tabLink+\"`\", function () {",
+									"    pm.expect(jsonResponseData.link).to.eql(tabLink);",
+									"});",
+									"",
+									"pm.test(\"Tab created is not in the future\", function () {",
+									"    const moment = require('moment')",
+									"    ",
+									"    let now  = moment()",
+									"    let created = moment(jsonResponseData.created)",
+									"    ",
+									"    pm.expect(created.isBefore(now)).to.be.true",
+									"    pm.expect(created.isAfter(now.subtract(15, 'seconds'))).to.be.true",
+									"});",
+									"",
+									"pm.test(\"Tab updated is null\", function () {",
+									"    pm.expect(jsonResponseData.updated).to.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Tab trashed is null\", function () {",
+									"    pm.expect(jsonResponseData.trashed).to.eql(null);",
+									"});",
+									"",
+									"// Set new vars",
+									"pm.globals.set(\"latest_created_tab_id\", jsonResponseData.id);",
+									"pm.globals.set(\"latest_created_tab_json\", jsonResponseData);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"tab_name\", \"Root Tab\");",
+									"pm.variables.set(\"tab_description\", \"This is a root tab\");",
+									"pm.variables.set(\"tab_link\", \"https://metabs.io/\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{tab_name}}\",\n    \"description\": \"{{tab_description}}\",\n    \"link\": \"{{tab_link}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get early created tab element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Tab json resposne body is the same as the one received during the creation\", function () {",
+									"    pm.expect(jsonResponseData).to.eql(pm.globals.get(\"latest_created_tab_json\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_tab_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_tab_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add child collection to the early created one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Collection id is not null\", function () {",
+									"    pm.expect(jsonResponseData.id ==null).to.be.false",
+									"});",
+									"",
+									"let collectionParentId = pm.globals.get(\"latest_created_collection_id\");",
+									"pm.test(\"Collection parent matches:`\"+collectionParentId+\"`\", function () {",
+									"    pm.expect(jsonResponseData.parent_id).to.eql(collectionParentId);",
+									"});",
+									"",
+									"let collectionName = pm.variables.get(\"collection_name\");",
+									"pm.test(\"Collection name matches:`\"+collectionName+\"`\", function () {",
+									"    pm.expect(jsonResponseData.name).to.eql(collectionName);",
+									"});",
+									"",
+									"let collectionDescription = pm.variables.get(\"collection_description\");",
+									"pm.test(\"Collection description matches:`\"+collectionDescription+\"`\", function () {",
+									"    pm.expect(jsonResponseData.description).to.eql(collectionDescription);",
+									"});",
+									"",
+									"pm.test(\"Collection created is not in the future\", function () {",
+									"    const moment = require('moment')",
+									"    ",
+									"    let now  = moment()",
+									"    let created = moment(jsonResponseData.created)",
+									"    ",
+									"    pm.expect(created.isBefore(now)).to.be.true",
+									"    pm.expect(created.isAfter(now.subtract(15, 'seconds'))).to.be.true",
+									"});",
+									"",
+									"pm.test(\"Collection updated is null\", function () {",
+									"    pm.expect(jsonResponseData.updated).to.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Collection trashed is null\", function () {",
+									"    pm.expect(jsonResponseData.trashed).to.eql(null);",
+									"});",
+									"",
+									"// Set new vars",
+									"pm.globals.set(\"latest_created_collection_id\", jsonResponseData.id);",
+									"pm.globals.set(\"latest_created_collection_json\", jsonResponseData);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"collection_name\", \"First child Collection\");",
+									"pm.variables.set(\"collection_description\", \"This is the first child collection\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{collection_name}}\",\n    \"description\": \"{{collection_description}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_collection_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_collection_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get early created child collection element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Collection json response body is the same as the one received during the creation\", function () {",
+									"    pm.expect(jsonResponseData).to.eql(pm.globals.get(\"latest_created_collection_json\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_collection_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_collection_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add child tab to the early created one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"pm.test(\"Tab id is not null\", function () {",
+									"    pm.expect(jsonResponseData.id ==null).to.be.false",
+									"});",
+									"",
+									"let collectionParentId = pm.globals.get(\"latest_created_collection_id\");",
+									"pm.test(\"Tab parent matches:`\"+collectionParentId+\"`\", function () {",
+									"    pm.expect(jsonResponseData.parent_id).to.eql(collectionParentId);",
+									"});",
+									"",
+									"let tabName = pm.variables.get(\"tab_name\");",
+									"pm.test(\"Tab name matches:`\"+tabName+\"`\", function () {",
+									"    pm.expect(jsonResponseData.name).to.eql(tabName);",
+									"});",
+									"",
+									"let tabDescription = pm.variables.get(\"tab_description\");",
+									"pm.test(\"Tab description matches:`\"+tabDescription+\"`\", function () {",
+									"    pm.expect(jsonResponseData.description).to.eql(tabDescription);",
+									"});",
+									"",
+									"",
+									"let tabLink = pm.variables.get(\"tab_link\");",
+									"pm.test(\"Tab link matches:`\"+tabLink+\"`\", function () {",
+									"    pm.expect(jsonResponseData.link).to.eql(tabLink);",
+									"});",
+									"",
+									"pm.test(\"Tab created is not in the future\", function () {",
+									"    const moment = require('moment')",
+									"    ",
+									"    let now  = moment()",
+									"    let created = moment(jsonResponseData.created)",
+									"    ",
+									"    pm.expect(created.isBefore(now)).to.be.true",
+									"    pm.expect(created.isAfter(now.subtract(15, 'seconds'))).to.be.true",
+									"});",
+									"",
+									"pm.test(\"Tab updated is null\", function () {",
+									"    pm.expect(jsonResponseData.updated).to.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Tab trashed is null\", function () {",
+									"    pm.expect(jsonResponseData.trashed).to.eql(null);",
+									"});",
+									"",
+									"// Set new vars",
+									"pm.globals.set(\"latest_created_tab_id\", jsonResponseData.id);",
+									"pm.globals.set(\"latest_created_tab_json\", jsonResponseData);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"tab_name\", \"First child tab\");",
+									"pm.variables.set(\"tab_description\", \"This is the first child tab\");",
+									"pm.variables.set(\"tab_link\", \"https://metabs.io/child\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{tab_name}}\",\n    \"description\": \"{{tab_description}}\",\n    \"link\": \"{{tab_link}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_collection_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_collection_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get early created child tab element",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Tab json resposne body is the same as the one received during the creation\", function () {",
+									"    pm.expect(jsonResponseData).to.eql(pm.globals.get(\"latest_created_tab_json\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/{{latest_created_tab_id}}",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"{{latest_created_tab_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error adding an collection element due to validation issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Validatione error due to empty name\", function () {",
+									"    pm.expect(jsonResponseData[0].codes[1]).to.be.eq(\"name\")",
+									"    pm.expect(jsonResponseData[0].code).to.be.eq(\"name\")",
+									"    pm.expect(jsonResponseData[0].defaultMessage).to.be.eq(\"Inserire un nome che non sia vuoto!\")",
+									"});",
+									"",
+									"pm.test(\"Validatione error due to empty description\", function () {",
+									"    pm.expect(jsonResponseData[1].codes[1]).to.be.eq(\"description\")",
+									"    pm.expect(jsonResponseData[1].code).to.be.eq(\"description\")",
+									"    pm.expect(jsonResponseData[1].defaultMessage).to.be.eq(\"Inserire una descrizione!\")",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error adding a tab element due to validation issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let jsonResponseData = pm.response.json();",
+									"",
+									"pm.test(\"Validatione error due to empty name\", function () {",
+									"    pm.expect(jsonResponseData[0].codes[1]).to.be.eq(\"name\")",
+									"    pm.expect(jsonResponseData[0].code).to.be.eq(\"name\")",
+									"    pm.expect(jsonResponseData[0].defaultMessage).to.be.eq(\"Inserire un nome che non sia vuoto!\")",
+									"});",
+									"",
+									"pm.test(\"Validatione error due to empty description\", function () {",
+									"    pm.expect(jsonResponseData[1].codes[1]).to.be.eq(\"description\")",
+									"    pm.expect(jsonResponseData[1].code).to.be.eq(\"description\")",
+									"    pm.expect(jsonResponseData[1].defaultMessage).to.be.eq(\"Inserire una descrizione!\")",
+									"});",
+									"",
+									"pm.test(\"Validatione error due to invalid link\", function () {",
+									"    pm.expect(jsonResponseData[2].codes[1]).to.be.eq(\"link\")",
+									"    pm.expect(jsonResponseData[2].code).to.be.eq(\"link\")",
+									"    pm.expect(jsonResponseData[2].defaultMessage).to.be.eq(\"no protocol: an invalid url\")",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"link\": \"an invalid url\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error adding a child collection to a non-existing parent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"collection_name\", \"A collection name\");",
+									"pm.variables.set(\"collection_description\", \"A collection description\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{collection_name}}\",\n    \"description\": \"{{collection_description}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{metabs_base_url}}/elements/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{metabs_base_url}}"
+							],
+							"path": [
+								"elements",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

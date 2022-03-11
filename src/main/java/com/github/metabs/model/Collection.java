@@ -10,13 +10,13 @@ import org.springframework.data.neo4j.core.schema.Node;
 public class Collection extends Element {
 
   private Collection(
-      UUID id,
-      Collection parentCollection,
-      Name name,
-      Description description,
-      LocalDateTime created,
-      LocalDateTime updated,
-      LocalDateTime trashed
+          UUID id,
+          Collection parentCollection,
+          Name name,
+          Description description,
+          LocalDateTime created,
+          LocalDateTime updated,
+          LocalDateTime trashed
   ) {
     this.id = id;
     this.parentCollection = parentCollection;
@@ -28,33 +28,33 @@ public class Collection extends Element {
   }
 
   public static Collection createCollection(
-      UUID id,
-      Name name,
-      Description description
+          UUID id,
+          Name name,
+          Description description
   ) {
     return new Collection(
-        id,
-        null,
-        name,
-        description,
-        LocalDateTime.now(),
-        null,
-        null);
+            id,
+            null,
+            name,
+            description,
+            LocalDateTime.now(),
+            null,
+            null);
   }
 
   public static Collection createCollectionWithParent(
-      UUID id,
-      Collection parentCollection,
-      Name name,
-      Description description
+          UUID id,
+          Collection parentCollection,
+          Name name,
+          Description description
   ) {
     return new Collection(
-        id,
-        parentCollection,
-        name,
-        description,
-        LocalDateTime.now(),
-        null,
-        null);
+            id,
+            parentCollection,
+            name,
+            description,
+            LocalDateTime.now(),
+            null,
+            null);
   }
 }

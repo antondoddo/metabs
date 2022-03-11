@@ -25,8 +25,8 @@ public class NameTest {
   public void shouldThrowTooLongNameException() {
     NameException exception = Assertions.assertThrows(NameException.class, () -> {
       Name name = new Name(""
-          + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-          + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+              + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     });
     Assert.assertEquals("Inserire un nome con meno di 80 caratteri!", exception.getMessage());
   }

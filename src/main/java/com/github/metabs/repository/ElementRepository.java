@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface ElementRepository extends Neo4jRepository<Element, UUID> {
 
   @Query(
-      "MATCH p=(child:Element{id:$id})-[:HAS_PARENT*0..1]->(parent:Element) "
-          + "RETURN child, collect(relationships(p)), collect(nodes(p))"
+          "MATCH p=(child:Element{id:$id})-[:HAS_PARENT*0..1]->(parent:Element) "
+                  + "RETURN child, collect(relationships(p)), collect(nodes(p))"
   )
   Optional<Element> findById(UUID id);
 }

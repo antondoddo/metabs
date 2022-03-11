@@ -1,0 +1,37 @@
+---
+name: API E2E Test - Postman
+
+on: [ push ]
+
+jobs:
+  runs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build java app
+        uses: ./.github/actions/build
+
+      - name: Copy docker env variables
+        run: cp .env.dist .env
+      - name: Copy docke env variables
+        run: docker-compose up -d
+
+      - name: Run app
+        run: mvn spring-boot:run &
+
+      - name: Waiting system to start up
+        run: sleep 60
+
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: postman/metabs.postman_collection.json
+          environment: postman/metabs.postman_environment.json
+      - name: Print server error messages
+        if: ${{ failure() }}
+        run: cat spring-logs.txt

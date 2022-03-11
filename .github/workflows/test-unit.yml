@@ -1,0 +1,19 @@
+---
+name: Unit Test
+
+on: [ push ]
+
+jobs:
+  runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build java app
+        uses: ./.github/actions/build
+
+      - name: Run tests
+        run: mvn test
