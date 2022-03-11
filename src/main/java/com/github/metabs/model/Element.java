@@ -11,7 +11,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 @org.springframework.data.neo4j.core.schema.Node("Element")
-public abstract class Element implements Node {
+public abstract class Element {
 
   @Id
   protected UUID id;
