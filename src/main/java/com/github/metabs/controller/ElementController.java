@@ -2,16 +2,17 @@ package com.github.metabs.controller;
 
 import com.github.metabs.model.Element;
 import com.github.metabs.model.dto.ElementDto;
-import com.github.metabs.model.exception.DescriptionException;
-import com.github.metabs.model.exception.NameException;
+import com.github.metabs.model.dto.SaveElementRequestDto;
+import com.github.metabs.model.dto.validator.RequestElementValidator;
 import com.github.metabs.service.ElementService;
 import com.github.metabs.service.exception.ParentNotFoundException;
-import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.UUID;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("elements")
-public class CollectionController {
+public class ElementController {
 
   @Autowired
   ElementService elementService;
+
+  @Resource(name = "requestElementValidator")
+  RequestElementValidator validator;
 
   @GetMapping("/{id}")
   public ResponseEntity<Element> getElementById(@PathVariable UUID id) {
@@ -43,14 +47,20 @@ public class CollectionController {
 
   @PostMapping("/")
   @ResponseBody
-  public ResponseEntity<Element> saveElement(@RequestBody ElementDto elementDto) {
+  public ResponseEntity<Object> saveElement(@RequestBody ElementDto elementDto,
+                                            BindingResult result) {
+
+    validator.validate(elementDto, result);
+    SaveElementRequestDto saveElementRequestDto = validator.getSaveElementRequestDto();
+    if (result.hasErrors()) {
+      return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     try {
       return new ResponseEntity<>(
-          elementService.saveElement(elementDto),
+          elementService.saveElement(saveElementRequestDto),
           HttpStatus.CREATED
       );
-    } catch (DescriptionException | NameException | MalformedURLException ex) {
-      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -59,17 +69,20 @@ public class CollectionController {
 
   @PostMapping("/{id}")
   @ResponseBody
-  public ResponseEntity<Element> saveElementWithParent(
+  public ResponseEntity<Object> saveElementWithParent(
       @RequestBody ElementDto elementDto,
-      @PathVariable("id") UUID parentCollectionId
+      @PathVariable("id") UUID parentCollectionId,
+      BindingResult result
   ) {
+    validator.validate(elementDto, result);
+    SaveElementRequestDto saveElementRequestDto = validator.getSaveElementRequestDto();
+    if (result.hasErrors()) {
+      return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
     try {
       return new ResponseEntity<>(
-          elementService.saveElementWithParent(elementDto, parentCollectionId),
-          HttpStatus.CREATED
-      );
-    } catch (DescriptionException | NameException | MalformedURLException ex) {
-      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+          elementService.saveElementWithParent(saveElementRequestDto, parentCollectionId),
+          HttpStatus.CREATED);
     } catch (ParentNotFoundException ex) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     } catch (Exception ex) {
