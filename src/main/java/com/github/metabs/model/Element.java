@@ -5,6 +5,7 @@ import com.github.metabs.model.vo.Name;
 import com.github.metabs.model.vo.converter.DescriptionConverter;
 import com.github.metabs.model.vo.converter.NameConverter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -24,6 +25,9 @@ public abstract class Element {
 
   @ConvertWith(converter = DescriptionConverter.class)
   protected Description description;
+
+  @Relationship(type = "ACCESS_BY", direction = Relationship.Direction.INCOMING)
+  protected List<Access> accesses;
 
   protected LocalDateTime created;
   protected LocalDateTime updated;
