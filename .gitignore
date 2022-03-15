@@ -34,3 +34,7 @@ build/
 
 ### Docker configuration ###
 .env
+
+### Github Actions ###
+!.github/actions/build
+

@@ -10,13 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - run: git log --oneline
-      - run: cd ./.github && ls -la
-      - run: cd ./.github/actions && ls -la
-      - run: cd ./.github/actions/build && ls -la
-
+        uses: actions/checkout@v2
       - name: Build java app
         uses: ./.github/actions/build
 
