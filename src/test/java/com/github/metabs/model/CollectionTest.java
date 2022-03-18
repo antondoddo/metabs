@@ -32,6 +32,33 @@ public class CollectionTest {
   }
 
   @Test
+  public void shouldCreateCollectionWithParent() throws Exception {
+    UUID parentId = UUID.randomUUID();
+    Name parentName = ObjectMother.generateRandomName();
+    Description parentDescription = ObjectMother.generateRandomDescription();
+    Collection parentCollection = Collection.createCollection(parentId,
+        parentName, parentDescription);
+
+    UUID id = UUID.randomUUID();
+    Name name = ObjectMother.generateRandomName();
+    Description description = ObjectMother.generateRandomDescription();
+    Collection collection = Collection.createCollectionWithParent(id, parentCollection,
+        name, description);
+
+    Assert.assertEquals(id, collection.getId());
+    Assert.assertEquals(name, collection.getName());
+    Assert.assertSame(parentCollection, collection.getParentCollection());
+    Assert.assertEquals(description, collection.getDescription());
+    Assert.assertEquals(
+        collection.getCreated().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
+    Assert.assertNull(collection.getUpdated());
+    Assert.assertNull(collection.getTrashed());
+  }
+
+  @Test
   public void shouldRename() throws Exception {
     Collection collection = Collection.createCollection(
         UUID.randomUUID(),

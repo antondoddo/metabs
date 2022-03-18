@@ -17,7 +17,7 @@ public class ElementDto {
     return name;
   }
 
-  public void setName(String name) {
+  public void rename(String name) {
     this.name = name;
   }
 
@@ -25,7 +25,7 @@ public class ElementDto {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void changeDescription(String description) {
     this.description = description;
   }
 
@@ -33,8 +33,7 @@ public class ElementDto {
     return link;
   }
 
-  public void setLink(String link) {
+  public void changeLink(String link) {
     this.link = link;
   }
-
 }

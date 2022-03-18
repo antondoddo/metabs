@@ -18,7 +18,7 @@ public class SaveElementRequestDto {
     return name;
   }
 
-  public void setName(Name name) {
+  public void rename(Name name) {
     this.name = name;
   }
 
@@ -26,7 +26,7 @@ public class SaveElementRequestDto {
     return description;
   }
 
-  public void setDescription(Description description) {
+  public void changeDescription(Description description) {
     this.description = description;
   }
 
@@ -34,7 +34,7 @@ public class SaveElementRequestDto {
     return link;
   }
 
-  public void setLink(URL link) {
+  public void changeLink(URL link) {
     this.link = link;
   }
 }

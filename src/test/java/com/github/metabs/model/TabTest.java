@@ -34,6 +34,36 @@ public class TabTest {
   }
 
   @Test
+  public void shouldCreateTabWithParent() throws Exception {
+    UUID parentId = UUID.randomUUID();
+    Name parentName = ObjectMother.generateRandomName();
+    Description parentDescription = ObjectMother.generateRandomDescription();
+    Collection parentCollection = Collection.createCollection(parentId,
+        parentName, parentDescription);
+
+    UUID tabId = UUID.randomUUID();
+    Name tabName = ObjectMother.generateRandomName();
+    URL tabLink = ObjectMother.generateRandomLink();
+    Description tabDescription = ObjectMother.generateRandomDescription();
+
+    Tab tab = Tab.createTabWithParent(tabId, parentCollection, tabName,
+        tabLink, tabDescription);
+
+    Assert.assertEquals(tabId, tab.getId());
+    Assert.assertSame(parentCollection, tab.getParentCollection());
+    Assert.assertEquals(tabName, tab.getName());
+    Assert.assertEquals(tabLink, tab.getLink());
+    Assert.assertEquals(tabDescription, tab.getDescription());
+    Assert.assertEquals(
+        tab.getCreated().toEpochSecond(ZoneOffset.UTC),
+        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        3
+    );
+    Assert.assertNull(tab.getUpdated());
+    Assert.assertNull(tab.getTrashed());
+  }
+
+  @Test
   public void shouldRename() throws Exception {
     Tab tab = Tab.createTab(
         UUID.randomUUID(),

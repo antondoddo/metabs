@@ -21,6 +21,9 @@ public class ElementService {
   @Autowired
   CollectionRepository collectionRepository;
 
+  public ElementService() {
+  }
+
   public Optional<Element> getElementById(UUID id) {
     return elementRepository.findById(id);
   }
@@ -44,7 +47,6 @@ public class ElementService {
           saveElementRequestDto.getDescription()
       );
     }
-
     return elementRepository.save(element);
   }
 
@@ -56,7 +58,6 @@ public class ElementService {
     if (!parentCollection.isPresent()) {
       throw ParentNotFoundException.parentNotFound();
     }
-
     Element element;
     if (saveElementRequestDto.getLink() == null) {
       UUID id = UUID.randomUUID();
@@ -76,7 +77,10 @@ public class ElementService {
           saveElementRequestDto.getDescription()
       );
     }
-
     return elementRepository.save(element);
+  }
+
+  public void deleteElementById(UUID id) {
+    elementRepository.deleteById(id);
   }
 }

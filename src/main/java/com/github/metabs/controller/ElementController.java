@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +86,21 @@ public class ElementController {
           HttpStatus.CREATED);
     } catch (ParentNotFoundException ex) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception ex) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Object> deleteElementById(
+      @PathVariable("id") UUID id) {
+    try {
+      Optional<Element> element = elementService.getElementById(id);
+      if (!element.isPresent()) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      elementService.deleteElementById(id);
+      return new ResponseEntity<>(HttpStatus.OK);
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
