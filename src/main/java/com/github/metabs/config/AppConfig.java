@@ -1,5 +1,6 @@
 package com.github.metabs.config;
 
+import com.github.metabs.model.Tab;
 import com.github.metabs.model.dto.SaveElementRequestDto;
 import com.github.metabs.model.dto.validator.RequestElementValidator;
 import org.neo4j.driver.Driver;
@@ -21,5 +22,6 @@ public class AppConfig {
   public RequestElementValidator requestElementValidator() {
     return new RequestElementValidator(new SaveElementRequestDto());
   }
+
 }
 

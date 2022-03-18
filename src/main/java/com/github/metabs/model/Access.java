@@ -12,10 +12,10 @@ public class Access {
   @RelationshipId
   private Long id;
 
-  private Role role;
+  private final Role role;
 
   @TargetNode
-  private User user;
+  private final User user;
 
   public Access(Role role, User user) {
     this.role = role;

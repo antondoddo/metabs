@@ -15,5 +15,11 @@ public interface ElementRepository extends Neo4jRepository<Element, UUID> {
           + "RETURN child, collect(relationships(p)), collect(nodes(p))"
   )
   Optional<Element> findById(UUID id);
+
+  @Query(
+      "MATCH (n:Element {id:$id})" +
+          "DELETE n"
+  )
+  void deleteById(UUID id);
 }
 

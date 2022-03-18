@@ -64,5 +64,4 @@ public class TabJsonSerializer extends JsonSerializer<Tab> {
     gen.writeEndObject();
   }
 
-
 }

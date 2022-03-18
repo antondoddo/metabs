@@ -30,12 +30,12 @@ public class RequestElementValidator implements Validator {
 
     ElementDto elementDto = (ElementDto) target;
     try {
-      saveElementRequestDto.setName(new Name(elementDto.getName()));
+      saveElementRequestDto.rename(new Name(elementDto.getName()));
     } catch (NameException ex) {
       errors.reject("name", ex.getMessage());
     }
     try {
-      saveElementRequestDto.setDescription(new Description(elementDto.getDescription()));
+      saveElementRequestDto.changeDescription(new Description(elementDto.getDescription()));
     } catch (DescriptionException ex) {
       errors.reject("description", ex.getMessage());
     }
@@ -43,7 +43,7 @@ public class RequestElementValidator implements Validator {
       return;
     }
     try {
-      saveElementRequestDto.setLink(new URL(elementDto.getLink()));
+      saveElementRequestDto.changeLink(new URL(elementDto.getLink()));
     } catch (MalformedURLException ex) {
       errors.reject("link", ex.getMessage());
     }
