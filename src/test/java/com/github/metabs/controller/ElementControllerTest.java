@@ -66,10 +66,15 @@ public class ElementControllerTest {
     objectMapper.registerModule(module);
     JacksonTester.initFields(this, objectMapper);
 
-    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+    MappingJackson2HttpMessageConverter converter =
+        new MappingJackson2HttpMessageConverter();
+
     converter.setObjectMapper(objectMapper);
 
-    mockMvc = MockMvcBuilders.standaloneSetup(elementController).setMessageConverters(converter).build();
+    mockMvc = MockMvcBuilders
+        .standaloneSetup(elementController)
+        .setMessageConverters(converter)
+        .build();
   }
 
   @Test
@@ -81,9 +86,9 @@ public class ElementControllerTest {
         elementService.getElementById(tab.getId())
     ).thenReturn(Optional.of(tab));
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        get("/elements/" + tab.getId().toString()).
-        accept(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .get("/elements/" + tab.getId().toString())
+        .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(request).andReturn();
 
@@ -95,7 +100,9 @@ public class ElementControllerTest {
     Assert.assertNull(outputJson.read("$.parent_id", String.class));
     Assert.assertEquals(outputJson.read("$.name", String.class), tab.getName().getValue());
     Assert.assertEquals(outputJson.read("$.link", String.class), tab.getLink().toString());
-    Assert.assertEquals(outputJson.read("$.description", String.class), tab.getDescription().getValue());
+    Assert.assertEquals(outputJson.read(
+        "$.description", String.class
+    ), tab.getDescription().getValue());
     Assert.assertEquals(outputJson.read("$.created", String.class), tab.getCreated().toString());
     Assert.assertNull(outputJson.read("$.updated", String.class));
     Assert.assertNull(outputJson.read("$.trashed", String.class));
@@ -110,9 +117,9 @@ public class ElementControllerTest {
         elementService.getElementById(tab.getId())
     ).thenReturn(Optional.empty());
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        get("/elements/" + tab.getId().toString()).
-        accept(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .get("/elements/" + tab.getId().toString())
+        .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(request).andReturn();
 
@@ -140,10 +147,10 @@ public class ElementControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String inputJson = objectMapper.writeValueAsString(input);
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        post("/elements/").
-        content(inputJson).
-        contentType(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .post("/elements/")
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
         .perform(request)
@@ -182,10 +189,10 @@ public class ElementControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String inputJson = objectMapper.writeValueAsString(input);
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        post("/elements/" + tab.getParentCollection().getId()).
-        content(inputJson).
-        contentType(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .post("/elements/" + tab.getParentCollection().getId())
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
         .perform(request)
@@ -221,10 +228,10 @@ public class ElementControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String inputJson = objectMapper.writeValueAsString(input);
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        post("/elements/").
-        content(inputJson).
-        contentType(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .post("/elements/")
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
         .perform(request)
@@ -261,10 +268,10 @@ public class ElementControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String inputJson = objectMapper.writeValueAsString(input);
 
-    RequestBuilder request = MockMvcRequestBuilders.
-        post("/elements/" + collection.getParentCollection().getId()).
-        content(inputJson).
-        contentType(MediaType.APPLICATION_JSON);
+    RequestBuilder request = MockMvcRequestBuilders
+        .post("/elements/" + collection.getParentCollection().getId())
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
         .perform(request)
@@ -280,23 +287,4 @@ public class ElementControllerTest {
         .andExpect(jsonPath("$.trashed").doesNotExist())
         .andExpect(status().isCreated());
   }
-/**
- @Test public void shouldReturnNonProcessableEntity() throws Exception {
-
- Tab tab = ObjectMother.generateRandomTab();
-
- Mockito.when(
- elementService.saveElement(tab.getId())
- ).thenReturn(Optional.empty());
-
- RequestBuilder request = MockMvcRequestBuilders.
- get("/elements/").
- accept(MediaType.APPLICATION_JSON);
-
- MvcResult result = mockMvc.perform(request).andReturn();
-
- MockHttpServletResponse response = result.getResponse();
- Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), response.getStatus());
- }
- **/
 }

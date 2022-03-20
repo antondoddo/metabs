@@ -55,7 +55,9 @@ public class ObjectMother {
     UUID idParent = UUID.randomUUID();
     Name nameParent = ObjectMother.generateRandomName();
     Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(idParent, nameParent, descriptionParent);
+    Collection collectionParent = Collection.createCollection(
+        idParent, nameParent, descriptionParent
+    );
 
     return Tab.createTabWithParent(id, collectionParent, name, link, description);
   }
@@ -94,7 +96,9 @@ public class ObjectMother {
     UUID idParent = UUID.randomUUID();
     Name nameParent = ObjectMother.generateRandomName();
     Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(idParent, nameParent, descriptionParent);
+    Collection collectionParent = Collection.createCollection(
+        idParent, nameParent, descriptionParent
+    );
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();

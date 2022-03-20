@@ -26,19 +26,27 @@ public class CollectionJsonSerializerTest {
     UUID idParent = UUID.randomUUID();
     Name nameParent = ObjectMother.generateRandomName();
     Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(idParent, nameParent, descriptionParent);
+    Collection collectionParent = Collection.createCollection(
+            idParent, nameParent, descriptionParent
+        );
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
     Description description = ObjectMother.generateRandomDescription();
 
-    Collection collection = Collection.createCollectionWithParent(id, collectionParent, name, description);
+    Collection collection = Collection.createCollectionWithParent(
+        id, collectionParent, name, description
+    );
 
     JsonContent<Collection> json = jacksonTester.write(collection);
 
-    assertThat(json).extractingJsonPathStringValue("$.id").isEqualTo(id.toString());
-    assertThat(json).extractingJsonPathStringValue("$.parent_id").isEqualTo(collectionParent);
-    assertThat(json).extractingJsonPathStringValue("$.name").isEqualTo(name.getValue());
-    assertThat(json).extractingJsonPathStringValue("$.description").isEqualTo(description.getValue());
+    assertThat(json).extractingJsonPathStringValue("$.id")
+        .isEqualTo(id.toString());
+    assertThat(json).extractingJsonPathStringValue("$.parent_id")
+        .isEqualTo(collectionParent);
+    assertThat(json).extractingJsonPathStringValue("$.name")
+        .isEqualTo(name.getValue());
+    assertThat(json).extractingJsonPathStringValue("$.description")
+        .isEqualTo(description.getValue());
   }
 }
