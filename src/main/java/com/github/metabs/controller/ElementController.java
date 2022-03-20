@@ -8,7 +8,6 @@ import com.github.metabs.service.ElementService;
 import com.github.metabs.service.exception.ParentNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ElementController {
 
   @Autowired
-  ElementService elementService;
+  private ElementService elementService;
 
-  @Resource(name = "requestElementValidator")
-  RequestElementValidator validator;
+  @Autowired
+  private RequestElementValidator validator;
 
   @GetMapping("/{id}")
   public ResponseEntity<Element> getElementById(@PathVariable UUID id) {
@@ -48,19 +47,22 @@ public class ElementController {
 
   @PostMapping("/")
   @ResponseBody
-  public ResponseEntity<Object> saveElement(@RequestBody SaveElementRequest saveElementRequest,
-                                            BindingResult result) {
+  public ResponseEntity<Object> saveElement(
+          @RequestBody SaveElementRequest elementRequest,
+          BindingResult result
+  ) {
 
-    validator.validate(saveElementRequest, result);
-    SaveElementDto saveElementDto = validator.getSaveElementDto();
+    validator.validate(elementRequest, result);
     if (result.hasErrors()) {
       return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    SaveElementDto dto = validator.getSaveElementDto();
+
     try {
       return new ResponseEntity<>(
-          elementService.saveElement(saveElementDto),
-          HttpStatus.CREATED
+              elementService.saveElement(dto),
+              HttpStatus.CREATED
       );
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,19 +73,21 @@ public class ElementController {
   @PostMapping("/{id}")
   @ResponseBody
   public ResponseEntity<Object> saveElementWithParent(
-      @RequestBody SaveElementRequest saveElementRequest,
-      @PathVariable("id") UUID parentCollectionId,
-      BindingResult result
+          @RequestBody SaveElementRequest request,
+          @PathVariable("id") UUID parentCollectionId,
+          BindingResult result
   ) {
-    validator.validate(saveElementRequest, result);
-    SaveElementDto saveElementDto = validator.getSaveElementDto();
+    validator.validate(request, result);
     if (result.hasErrors()) {
       return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    SaveElementDto dto = validator.getSaveElementDto();
+
     try {
       return new ResponseEntity<>(
-          elementService.saveElementWithParent(saveElementDto, parentCollectionId),
-          HttpStatus.CREATED);
+              elementService.saveElementWithParent(dto, parentCollectionId),
+              HttpStatus.CREATED);
     } catch (ParentNotFoundException ex) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     } catch (Exception ex) {
@@ -93,7 +97,7 @@ public class ElementController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Object> trashElementById(
-      @PathVariable("id") UUID id) {
+          @PathVariable("id") UUID id) {
     try {
       Optional<Element> element = elementService.getElementById(id);
       if (!element.isPresent()) {
