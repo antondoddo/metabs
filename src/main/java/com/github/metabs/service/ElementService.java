@@ -3,7 +3,7 @@ package com.github.metabs.service;
 import com.github.metabs.model.Collection;
 import com.github.metabs.model.Element;
 import com.github.metabs.model.Tab;
-import com.github.metabs.model.dto.SaveElementRequestDto;
+import com.github.metabs.model.dto.SaveElementDto;
 import com.github.metabs.repository.CollectionRepository;
 import com.github.metabs.repository.ElementRepository;
 import com.github.metabs.service.exception.ParentNotFoundException;
@@ -28,59 +28,59 @@ public class ElementService {
     return elementRepository.findById(id);
   }
 
-  public Element saveElement(SaveElementRequestDto saveElementRequestDto) {
+  public Element saveElement(SaveElementDto saveSaveElementDtoRequestDto) {
 
-    Element element;
-    if (saveElementRequestDto.getLink() == null) {
+    com.github.metabs.model.Element element;
+    if (saveSaveElementDtoRequestDto.getLink() == null) {
       UUID id = UUID.randomUUID();
       element = Collection.createCollection(
           id,
-          saveElementRequestDto.getName(),
-          saveElementRequestDto.getDescription()
+          saveSaveElementDtoRequestDto.getName(),
+          saveSaveElementDtoRequestDto.getDescription()
       );
     } else {
       UUID id2 = UUID.randomUUID();
       element = Tab.createTab(
           id2,
-          saveElementRequestDto.getName(),
-          saveElementRequestDto.getLink(),
-          saveElementRequestDto.getDescription()
+          saveSaveElementDtoRequestDto.getName(),
+          saveSaveElementDtoRequestDto.getLink(),
+          saveSaveElementDtoRequestDto.getDescription()
       );
     }
     return elementRepository.save(element);
   }
 
-  public Element saveElementWithParent(
-      SaveElementRequestDto saveElementRequestDto,
+  public com.github.metabs.model.Element saveElementWithParent(
+      SaveElementDto saveSaveElementDtoRequestDto,
       UUID parentCollectionId
   ) throws ParentNotFoundException {
     Optional<Collection> parentCollection = collectionRepository.findById(parentCollectionId);
     if (!parentCollection.isPresent()) {
       throw ParentNotFoundException.parentNotFound();
     }
-    Element element;
-    if (saveElementRequestDto.getLink() == null) {
+    com.github.metabs.model.Element element;
+    if (saveSaveElementDtoRequestDto.getLink() == null) {
       UUID id = UUID.randomUUID();
       element = Collection.createCollectionWithParent(
           id,
           parentCollection.get(),
-          saveElementRequestDto.getName(),
-          saveElementRequestDto.getDescription()
+          saveSaveElementDtoRequestDto.getName(),
+          saveSaveElementDtoRequestDto.getDescription()
       );
     } else {
       UUID id2 = UUID.randomUUID();
       element = Tab.createTabWithParent(
           id2,
           parentCollection.get(),
-          saveElementRequestDto.getName(),
-          saveElementRequestDto.getLink(),
-          saveElementRequestDto.getDescription()
+          saveSaveElementDtoRequestDto.getName(),
+          saveSaveElementDtoRequestDto.getLink(),
+          saveSaveElementDtoRequestDto.getDescription()
       );
     }
     return elementRepository.save(element);
   }
 
-  public void deleteElementById(UUID id) {
+  public void trashElementById(UUID id) {
     elementRepository.deleteById(id);
   }
 }

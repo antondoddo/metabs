@@ -1,13 +1,16 @@
 package com.github.metabs.model.dto;
 
-public class ElementDto {
+public class SaveElementRequest {
 
   private String name;
   private String description;
   private String link;
 
 
-  public ElementDto(String name, String description, String link) {
+  public SaveElementRequest() {
+  }
+
+  public SaveElementRequest(String name, String description, String link) {
     this.name = name;
     this.description = description;
     this.link = link;
