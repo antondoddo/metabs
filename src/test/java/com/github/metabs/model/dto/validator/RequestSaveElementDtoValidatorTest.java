@@ -1,7 +1,7 @@
 package com.github.metabs.model.dto.validator;
 
-import com.github.metabs.model.dto.SaveElementRequest;
 import com.github.metabs.model.dto.SaveElementDto;
+import com.github.metabs.model.dto.SaveElementRequest;
 import org.junit.Assert;
 import org.junit.Test;
 

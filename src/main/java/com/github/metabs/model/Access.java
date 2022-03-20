@@ -8,14 +8,12 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 @RelationshipProperties
 public class Access {
 
+  private final Role role;
+  @TargetNode
+  private final User user;
   @Id
   @RelationshipId
   private Long id;
-
-  private final Role role;
-
-  @TargetNode
-  private final User user;
 
   public Access(Role role, User user) {
     this.role = role;
