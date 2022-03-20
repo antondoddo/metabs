@@ -1,7 +1,6 @@
 package com.github.metabs.config;
 
-import com.github.metabs.model.Tab;
-import com.github.metabs.model.dto.SaveElementRequestDto;
+import com.github.metabs.model.dto.SaveElementDto;
 import com.github.metabs.model.dto.validator.RequestElementValidator;
 import org.neo4j.driver.Driver;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +19,7 @@ public class AppConfig {
   @Bean
   @RequestScope
   public RequestElementValidator requestElementValidator() {
-    return new RequestElementValidator(new SaveElementRequestDto());
+    return new RequestElementValidator(new SaveElementDto());
   }
 
 }

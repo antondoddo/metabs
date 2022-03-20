@@ -5,13 +5,14 @@ import com.github.metabs.model.vo.Name;
 import java.net.URL;
 
 
-public class SaveElementRequestDto {
+public class SaveElementDto {
 
   private Name name;
-  private Description description;
   private URL link;
+  private Description description;
 
-  public SaveElementRequestDto() {
+
+  public SaveElementDto() {
   }
 
   public Name getName() {

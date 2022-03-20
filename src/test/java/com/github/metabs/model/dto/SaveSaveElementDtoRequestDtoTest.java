@@ -7,28 +7,28 @@ import java.net.URL;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SaveElementRequestDtoTest {
+public class SaveSaveElementDtoRequestDtoTest {
 
-  SaveElementRequestDto saveElementRequestDto = new SaveElementRequestDto();
+  SaveElementDto saveElementDto = new SaveElementDto();
 
   @Test
   public void shouldRename() throws Exception {
     Name name = ObjectMother.generateRandomName();
-    saveElementRequestDto.rename(name);
-    Assert.assertEquals(name, saveElementRequestDto.getName());
+    saveElementDto.rename(name);
+    Assert.assertEquals(name, saveElementDto.getName());
   }
 
   @Test
   public void shouldChangeDescription() throws Exception {
     Description description = ObjectMother.generateRandomDescription();
-    saveElementRequestDto.changeDescription(description);
-    Assert.assertEquals(description, saveElementRequestDto.getDescription());
+    saveElementDto.changeDescription(description);
+    Assert.assertEquals(description, saveElementDto.getDescription());
   }
 
   @Test
   public void shouldChangeLink() throws Exception {
     URL link = ObjectMother.generateRandomLink();
-    saveElementRequestDto.changeLink(link);
-    Assert.assertEquals(link, saveElementRequestDto.getLink());
+    saveElementDto.changeLink(link);
+    Assert.assertEquals(link, saveElementDto.getLink());
   }
 }
