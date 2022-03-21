@@ -5,7 +5,17 @@ services:
   neo4j:
     image: neo4j:4.3.3-enterprise
     ports:
-      - 7474:7474
-      - 7687:7687
+      - "7474:7474"
+      - "7687:7687"
     env_file:
       - .env
+
+  server:
+    build:
+      context: .
+      args:
+        PROFILE: docker
+    ports:
+      - "8046:8046"
+    depends_on:
+      - neo4j

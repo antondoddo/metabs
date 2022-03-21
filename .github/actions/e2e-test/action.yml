@@ -1,0 +1,36 @@
+---
+name: E2E Tests
+description: Run E2E tests using postman
+
+inputs: { }
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build java app
+      uses: ./.github/actions/setup-java
+
+    - name: Copy docker env variables
+      run: cp .env.dist .env
+      shell: bash
+
+    - name: Run docker compose
+      run: docker-compose up -d --build
+      shell: bash
+
+    - name: Waiting system to start up
+      run: timeout 45s bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8046/)" != "200" ]]; do sleep 1; done'
+      shell: bash
+
+    - uses: matt-ball/newman-action@master
+      with:
+        collection: postman/metabs.postman_collection.json
+        environment: postman/metabs.postman_environment.json
+
+    - name: Print server error messages
+      if: ${{ failure() }}
+      run: docker-compose logs server
+      shell: bash
