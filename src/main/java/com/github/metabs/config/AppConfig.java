@@ -1,7 +1,7 @@
 package com.github.metabs.config;
 
-import com.github.metabs.model.dto.SaveElementDto;
-import com.github.metabs.model.dto.validator.RequestElementValidator;
+import com.github.metabs.controller.validator.RequestElementValidator;
+import com.github.metabs.service.SaveElementDto;
 import org.neo4j.driver.Driver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

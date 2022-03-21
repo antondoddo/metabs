@@ -18,9 +18,11 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
   ) throws IOException {
 
     gen.writeStartObject();
+
     gen.writeStringField(
         "id",
         value.getId().toString());
+
     if (value.getParentCollection() != null) {
       gen.writeStringField(
           "parent_id",
@@ -28,9 +30,11 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     } else {
       gen.writeNullField("parent_id");
     }
+
     gen.writeStringField(
         "name",
         value.getName().getValue());
+
     if (value.getDescription() != null) {
       gen.writeStringField(
           "description",
@@ -38,9 +42,11 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     } else {
       gen.writeNullField("description");
     }
+
     gen.writeStringField(
         "created",
         value.getCreated().toString());
+
     if (value.getUpdated() != null) {
       gen.writeStringField(
           "updated",
@@ -56,6 +62,8 @@ public class CollectionJsonSerializer extends JsonSerializer<Collection> {
     } else {
       gen.writeNullField("trashed");
     }
+
     gen.writeEndObject();
   }
+
 }

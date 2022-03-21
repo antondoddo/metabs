@@ -1,4 +1,4 @@
-package com.github.metabs.model.dto;
+package com.github.metabs.service;
 
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
@@ -19,7 +19,7 @@ public class SaveElementDto {
     return name;
   }
 
-  public void rename(Name name) {
+  public void setName(Name name) {
     this.name = name;
   }
 
@@ -27,7 +27,7 @@ public class SaveElementDto {
     return description;
   }
 
-  public void changeDescription(Description description) {
+  public void setDescription(Description description) {
     this.description = description;
   }
 
@@ -35,7 +35,7 @@ public class SaveElementDto {
     return link;
   }
 
-  public void changeLink(URL link) {
+  public void setLink(URL link) {
     this.link = link;
   }
 }

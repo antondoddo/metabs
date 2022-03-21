@@ -17,9 +17,11 @@ public class TabJsonSerializer extends JsonSerializer<Tab> {
   ) throws IOException {
 
     gen.writeStartObject();
+
     gen.writeStringField(
         "id",
         value.getId().toString());
+
     if (value.getParentCollection() != null) {
       gen.writeStringField(
           "parent_id",
@@ -27,9 +29,11 @@ public class TabJsonSerializer extends JsonSerializer<Tab> {
     } else {
       gen.writeNullField("parent_id");
     }
+
     gen.writeStringField(
         "name",
         value.getName().getValue());
+
     gen.writeStringField(
         "link",
         value.getLink().toString());
@@ -41,6 +45,7 @@ public class TabJsonSerializer extends JsonSerializer<Tab> {
     } else {
       gen.writeNullField("description");
     }
+
     gen.writeStringField(
         "created",
         value.getCreated().toString());
