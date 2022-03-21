@@ -49,12 +49,11 @@ public class ElementController {
       @RequestBody SaveElementRequest elementRequest,
       BindingResult result
   ) {
+    validator.validate(elementRequest, result);
     if (result.hasErrors()) {
       return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
-    validator.validate(elementRequest, result);
     SaveElementDto dto = validator.getSaveElementDto();
-
     try {
       return new ResponseEntity<>(
           elementService.saveElement(dto),
@@ -65,7 +64,6 @@ public class ElementController {
     }
   }
 
-
   @PostMapping("/{id}")
   @ResponseBody
   public ResponseEntity<Object> saveElementWithParent(
@@ -73,10 +71,10 @@ public class ElementController {
       @PathVariable("id") UUID parentCollectionId,
       BindingResult result
   ) {
+    validator.validate(request, result);
     if (result.hasErrors()) {
       return new ResponseEntity<>(result.getAllErrors(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
-    validator.validate(request, result);
     SaveElementDto dto = validator.getSaveElementDto();
     try {
       return new ResponseEntity<>(
@@ -102,7 +100,6 @@ public class ElementController {
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
   }
-
 }
+

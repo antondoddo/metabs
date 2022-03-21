@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-@org.springframework.data.neo4j.core.schema.Node("Element")
+@Node("Element")
 
 public abstract class Element {
 

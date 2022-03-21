@@ -38,16 +38,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(MockitoJUnitRunner.class)
 public class ElementControllerTest {
 
-  private MockMvc mockMvc;
-
-  @Mock
-  private ElementService elementService;
-
   @Spy
   private final RequestElementValidator validator = new RequestElementValidator(
       new SaveElementDto()
   );
-
+  private MockMvc mockMvc;
+  @Mock
+  private ElementService elementService;
   @InjectMocks
   private ElementController elementController;
 
