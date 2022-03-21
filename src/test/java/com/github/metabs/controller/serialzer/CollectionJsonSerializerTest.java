@@ -1,14 +1,12 @@
 package com.github.metabs.controller.serialzer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.metabs.controller.serializer.CollectionJsonSerializer;
 import com.github.metabs.model.Collection;
 import com.github.metabs.model.ObjectMother;
-import com.github.metabs.model.vo.Description;
-import com.github.metabs.model.vo.Name;
-import java.util.UUID;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,34 +33,20 @@ public class CollectionJsonSerializerTest {
   @Test
   public void serializeFromJavaToJson() throws Exception {
 
-    UUID idParent = UUID.randomUUID();
-    Name nameParent = ObjectMother.generateRandomName();
-    Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(
-            idParent, nameParent, descriptionParent
-    );
-
-    UUID id = UUID.randomUUID();
-    Name name = ObjectMother.generateRandomName();
-    Description description = ObjectMother.generateRandomDescription();
-
-    Collection collection = Collection.createCollectionWithParent(
-            id, collectionParent, name, description
-    );
-
+    Collection collection = ObjectMother.generateRandomCollectionWithParent();
     JsonContent<Collection> json = jacksonTester.write(collection);
-
     assertThat(json)
-            .extractingJsonPathStringValue("$.id")
-            .isEqualTo(id.toString());
+        .extractingJsonPathStringValue("$.id")
+        .isEqualTo(collection.getId().toString());
     assertThat(json)
-            .extractingJsonPathStringValue("$.parent_id")
-            .isEqualTo(collectionParent.getId().toString());
+        .extractingJsonPathStringValue("$.parent_id")
+        .isEqualTo(collection.getParentCollection().getId().toString());
     assertThat(json)
-            .extractingJsonPathStringValue("$.name")
-            .isEqualTo(name.getValue());
+        .extractingJsonPathStringValue("$.name")
+        .isEqualTo(collection.getName().getValue());
     assertThat(json)
-            .extractingJsonPathStringValue("$.description")
-            .isEqualTo(description.getValue());
+        .extractingJsonPathStringValue("$.description")
+        .isEqualTo(collection.getDescription().getValue());
   }
+
 }

@@ -1,4 +1,4 @@
-package com.github.metabs.model.dto;
+package com.github.metabs.service;
 
 import com.github.metabs.model.ObjectMother;
 import com.github.metabs.model.vo.Description;
@@ -7,28 +7,28 @@ import java.net.URL;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SaveSaveElementDtoRequestDtoTest {
+public class SaveElementDtoTest {
 
   SaveElementDto saveElementDto = new SaveElementDto();
 
   @Test
   public void shouldRename() throws Exception {
     Name name = ObjectMother.generateRandomName();
-    saveElementDto.rename(name);
+    saveElementDto.setName(name);
     Assert.assertEquals(name, saveElementDto.getName());
   }
 
   @Test
   public void shouldChangeDescription() throws Exception {
     Description description = ObjectMother.generateRandomDescription();
-    saveElementDto.changeDescription(description);
+    saveElementDto.setDescription(description);
     Assert.assertEquals(description, saveElementDto.getDescription());
   }
 
   @Test
   public void shouldChangeLink() throws Exception {
     URL link = ObjectMother.generateRandomLink();
-    saveElementDto.changeLink(link);
+    saveElementDto.setLink(link);
     Assert.assertEquals(link, saveElementDto.getLink());
   }
 }

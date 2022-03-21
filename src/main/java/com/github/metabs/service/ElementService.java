@@ -3,7 +3,6 @@ package com.github.metabs.service;
 import com.github.metabs.model.Collection;
 import com.github.metabs.model.Element;
 import com.github.metabs.model.Tab;
-import com.github.metabs.model.dto.SaveElementDto;
 import com.github.metabs.repository.CollectionRepository;
 import com.github.metabs.repository.ElementRepository;
 import com.github.metabs.service.exception.ParentNotFoundException;
@@ -16,10 +15,10 @@ import org.springframework.stereotype.Service;
 public class ElementService {
 
   @Autowired
-  ElementRepository elementRepository;
+  private ElementRepository elementRepository;
 
   @Autowired
-  CollectionRepository collectionRepository;
+  private CollectionRepository collectionRepository;
 
   public ElementService() {
   }
@@ -30,18 +29,18 @@ public class ElementService {
 
   public Element saveElement(SaveElementDto dto) {
 
-    com.github.metabs.model.Element element;
+    Element element;
+    UUID id = UUID.randomUUID();
+
     if (dto.getLink() == null) {
-      UUID id = UUID.randomUUID();
       element = Collection.createCollection(
           id,
           dto.getName(),
           dto.getDescription()
       );
     } else {
-      UUID id2 = UUID.randomUUID();
       element = Tab.createTab(
-          id2,
+          id,
           dto.getName(),
           dto.getLink(),
           dto.getDescription()
@@ -50,7 +49,7 @@ public class ElementService {
     return elementRepository.save(element);
   }
 
-  public com.github.metabs.model.Element saveElementWithParent(
+  public Element saveElementWithParent(
       SaveElementDto dto,
       UUID parentCollectionId
   ) throws ParentNotFoundException {
@@ -58,9 +57,11 @@ public class ElementService {
     if (!parentCollection.isPresent()) {
       throw ParentNotFoundException.parentNotFound();
     }
-    com.github.metabs.model.Element element;
+    Element element;
+
+    UUID id = UUID.randomUUID();
     if (dto.getLink() == null) {
-      UUID id = UUID.randomUUID();
+
       element = Collection.createCollectionWithParent(
           id,
           parentCollection.get(),
@@ -68,9 +69,8 @@ public class ElementService {
           dto.getDescription()
       );
     } else {
-      UUID id2 = UUID.randomUUID();
       element = Tab.createTabWithParent(
-          id2,
+          id,
           parentCollection.get(),
           dto.getName(),
           dto.getLink(),

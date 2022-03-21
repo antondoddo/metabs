@@ -1,17 +1,17 @@
-package com.github.metabs.model.dto.validator;
+package com.github.metabs.controller.validator;
 
-import com.github.metabs.model.dto.SaveElementDto;
-import com.github.metabs.model.dto.SaveElementRequest;
+import com.github.metabs.controller.SaveElementRequest;
 import com.github.metabs.model.exception.DescriptionException;
 import com.github.metabs.model.exception.NameException;
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
+import com.github.metabs.service.SaveElementDto;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-//@Component
+
 public class RequestElementValidator implements Validator {
 
 
@@ -31,12 +31,12 @@ public class RequestElementValidator implements Validator {
 
     SaveElementRequest saveElementRequest = (SaveElementRequest) target;
     try {
-      saveElementDto.rename(new Name(saveElementRequest.getName()));
+      saveElementDto.setName(new Name(saveElementRequest.getName()));
     } catch (NameException ex) {
       errors.reject("name", ex.getMessage());
     }
     try {
-      saveElementDto.changeDescription(new Description(saveElementRequest.getDescription()));
+      saveElementDto.setDescription(new Description(saveElementRequest.getDescription()));
     } catch (DescriptionException ex) {
       errors.reject("description", ex.getMessage());
     }
@@ -44,7 +44,7 @@ public class RequestElementValidator implements Validator {
       return;
     }
     try {
-      saveElementDto.changeLink(new URL(saveElementRequest.getLink()));
+      saveElementDto.setLink(new URL(saveElementRequest.getLink()));
     } catch (MalformedURLException ex) {
       errors.reject("link", ex.getMessage());
     }

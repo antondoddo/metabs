@@ -1,4 +1,4 @@
-package com.github.metabs.model.dto;
+package com.github.metabs.controller;
 
 public class SaveElementRequest {
 
@@ -20,7 +20,7 @@ public class SaveElementRequest {
     return name;
   }
 
-  public void rename(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
@@ -28,7 +28,7 @@ public class SaveElementRequest {
     return description;
   }
 
-  public void changeDescription(String description) {
+  public void setDescription(String description) {
     this.description = description;
   }
 
@@ -36,7 +36,7 @@ public class SaveElementRequest {
     return link;
   }
 
-  public void changeLink(String link) {
+  public void setLink(String link) {
     this.link = link;
   }
 }

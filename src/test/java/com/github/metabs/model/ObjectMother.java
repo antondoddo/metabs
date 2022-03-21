@@ -1,11 +1,11 @@
 package com.github.metabs.model;
 
 import com.github.javafaker.Faker;
-import com.github.metabs.model.dto.SaveElementDto;
 import com.github.metabs.model.exception.DescriptionException;
 import com.github.metabs.model.exception.NameException;
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
+import com.github.metabs.service.SaveElementDto;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
@@ -81,9 +81,9 @@ public class ObjectMother {
     URL link = ObjectMother.generateRandomLink();
     Description description = ObjectMother.generateRandomDescription();
     SaveElementDto saveElementDto = new SaveElementDto();
-    saveElementDto.rename(name);
-    saveElementDto.changeLink(link);
-    saveElementDto.changeDescription(description);
+    saveElementDto.setName(name);
+    saveElementDto.setLink(link);
+    saveElementDto.setDescription(description);
 
     return saveElementDto;
 

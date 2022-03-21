@@ -1,10 +1,9 @@
-package com.github.metabs.model.dto;
+package com.github.metabs.controller;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SaveSaveElementDtoRequestTest {
-
+public class SaveElementRequestTest {
 
   @Test
   public void shouldCreateElementDto() {
@@ -21,7 +20,7 @@ public class SaveSaveElementDtoRequestTest {
     SaveElementRequest saveElementRequest = new SaveElementRequest("dto",
         "questo è un dto",
         "https://www.google.com");
-    saveElementRequest.rename("nome cambiato");
+    saveElementRequest.setName("nome cambiato");
     Assert.assertEquals(saveElementRequest.getName(), "nome cambiato");
   }
 
@@ -30,7 +29,7 @@ public class SaveSaveElementDtoRequestTest {
     SaveElementRequest saveElementRequest = new SaveElementRequest("dto",
         "questo è un dto",
         "https://www.google.com");
-    saveElementRequest.changeDescription("descrizione cambiata");
+    saveElementRequest.setDescription("descrizione cambiata");
     Assert.assertEquals(saveElementRequest.getDescription(), "descrizione cambiata");
   }
 
@@ -39,7 +38,7 @@ public class SaveSaveElementDtoRequestTest {
     SaveElementRequest saveElementRequest = new SaveElementRequest("dto",
         "questo è un dto",
         "https://www.google.com");
-    saveElementRequest.changeLink("https://www.facebook.com");
+    saveElementRequest.setLink("https://www.facebook.com");
     Assert.assertEquals(saveElementRequest.getLink(), "https://www.facebook.com");
   }
 }

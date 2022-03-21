@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.metabs.controller.serializer.CollectionJsonSerializer;
 import com.github.metabs.controller.serializer.TabJsonSerializer;
+import com.github.metabs.controller.validator.RequestElementValidator;
 import com.github.metabs.model.Collection;
 import com.github.metabs.model.ObjectMother;
 import com.github.metabs.model.Tab;
-import com.github.metabs.model.dto.SaveElementDto;
-import com.github.metabs.model.dto.validator.RequestElementValidator;
 import com.github.metabs.service.ElementService;
+import com.github.metabs.service.SaveElementDto;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -44,7 +44,9 @@ public class ElementControllerTest {
   private ElementService elementService;
 
   @Spy
-  private RequestElementValidator validator = new RequestElementValidator(new SaveElementDto());
+  private final RequestElementValidator validator = new RequestElementValidator(
+      new SaveElementDto()
+  );
 
   @InjectMocks
   private ElementController elementController;
@@ -63,9 +65,9 @@ public class ElementControllerTest {
     converter.setObjectMapper(objectMapper);
 
     mockMvc = MockMvcBuilders
-            .standaloneSetup(elementController)
-            .setMessageConverters(converter)
-            .build();
+        .standaloneSetup(elementController)
+        .setMessageConverters(converter)
+        .build();
   }
 
   @Test
@@ -73,23 +75,23 @@ public class ElementControllerTest {
     Tab tab = ObjectMother.generateRandomTab();
 
     Mockito.when(
-            elementService.getElementById(tab.getId())
+        elementService.getElementById(tab.getId())
     ).thenReturn(Optional.of(tab));
 
     RequestBuilder request = MockMvcRequestBuilders
-            .get("/elements/" + tab.getId().toString())
-            .accept(MediaType.APPLICATION_JSON);
+        .get("/elements/" + tab.getId().toString())
+        .accept(MediaType.APPLICATION_JSON);
 
     mockMvc.perform(request)
-            .andExpect(jsonPath("$.id").value(tab.getId().toString()))
-            .andExpect(jsonPath("$.parent_id").doesNotExist())
-            .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
-            .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
-            .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
-            .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
-            .andExpect(jsonPath("$.updated").doesNotExist())
-            .andExpect(jsonPath("$.trashed").doesNotExist())
-            .andExpect(status().isOk());
+        .andExpect(jsonPath("$.id").value(tab.getId().toString()))
+        .andExpect(jsonPath("$.parent_id").doesNotExist())
+        .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
+        .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
+        .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
+        .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
+        .andExpect(jsonPath("$.updated").doesNotExist())
+        .andExpect(jsonPath("$.trashed").doesNotExist())
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -97,12 +99,12 @@ public class ElementControllerTest {
     Tab tab = ObjectMother.generateRandomTab();
 
     Mockito.when(
-            elementService.getElementById(tab.getId())
+        elementService.getElementById(tab.getId())
     ).thenReturn(Optional.empty());
 
     RequestBuilder request = MockMvcRequestBuilders
-            .get("/elements/" + tab.getId().toString())
-            .accept(MediaType.APPLICATION_JSON);
+        .get("/elements/" + tab.getId().toString())
+        .accept(MediaType.APPLICATION_JSON);
 
     mockMvc.perform(request).andExpect(status().isNotFound());
   }
@@ -127,21 +129,21 @@ public class ElementControllerTest {
     String inputJson = objectMapper.writeValueAsString(input);
 
     RequestBuilder request = MockMvcRequestBuilders
-            .post("/elements/")
-            .content(inputJson)
-            .contentType(MediaType.APPLICATION_JSON);
+        .post("/elements/")
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
-            .perform(request)
-            .andExpect(jsonPath("$.id").value(tab.getId().toString()))
-            .andExpect(jsonPath("$.parent_id").doesNotExist())
-            .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
-            .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
-            .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
-            .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
-            .andExpect(jsonPath("$.updated").doesNotExist())
-            .andExpect(jsonPath("$.trashed").doesNotExist())
-            .andExpect(status().isCreated());
+        .perform(request)
+        .andExpect(jsonPath("$.id").value(tab.getId().toString()))
+        .andExpect(jsonPath("$.parent_id").doesNotExist())
+        .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
+        .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
+        .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
+        .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
+        .andExpect(jsonPath("$.updated").doesNotExist())
+        .andExpect(jsonPath("$.trashed").doesNotExist())
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -149,13 +151,13 @@ public class ElementControllerTest {
     Tab tab = ObjectMother.generateRandomTabWithParent();
 
     Mockito.when(elementService.saveElementWithParent(
-            Mockito.argThat((SaveElementDto dto) -> {
-              Assert.assertEquals(dto.getName(), tab.getName());
-              Assert.assertEquals(dto.getDescription(), tab.getDescription());
-              Assert.assertEquals(dto.getLink(), tab.getLink());
-              return true;
-            }),
-            Mockito.argThat((UUID id) -> id.equals(tab.getParentCollection().getId()))
+        Mockito.argThat((SaveElementDto dto) -> {
+          Assert.assertEquals(dto.getName(), tab.getName());
+          Assert.assertEquals(dto.getDescription(), tab.getDescription());
+          Assert.assertEquals(dto.getLink(), tab.getLink());
+          return true;
+        }),
+        Mockito.argThat((UUID id) -> id.equals(tab.getParentCollection().getId()))
     )).thenReturn(tab);
 
     Map<String, String> input = new HashMap<>();
@@ -167,24 +169,24 @@ public class ElementControllerTest {
     String inputJson = objectMapper.writeValueAsString(input);
 
     RequestBuilder request = MockMvcRequestBuilders
-            .post("/elements/" + tab.getParentCollection().getId())
-            .content(inputJson)
-            .contentType(MediaType.APPLICATION_JSON);
+        .post("/elements/" + tab.getParentCollection().getId())
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
-            .perform(request)
-            .andExpect(jsonPath("$.id").value(tab.getId().toString()))
-            .andExpect(jsonPath("$.parent_id").value(
-                            tab.getParentCollection().getId().toString()
-                    )
+        .perform(request)
+        .andExpect(jsonPath("$.id").value(tab.getId().toString()))
+        .andExpect(jsonPath("$.parent_id").value(
+            tab.getParentCollection().getId().toString()
             )
-            .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
-            .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
-            .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
-            .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
-            .andExpect(jsonPath("$.updated").doesNotExist())
-            .andExpect(jsonPath("$.trashed").doesNotExist())
-            .andExpect(status().isCreated());
+        )
+        .andExpect(jsonPath("$.name").value(tab.getName().getValue()))
+        .andExpect(jsonPath("$.link").value(tab.getLink().toString()))
+        .andExpect(jsonPath("$.description").value(tab.getDescription().getValue()))
+        .andExpect(jsonPath("$.created").value(tab.getCreated().toString()))
+        .andExpect(jsonPath("$.updated").doesNotExist())
+        .andExpect(jsonPath("$.trashed").doesNotExist())
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -206,22 +208,22 @@ public class ElementControllerTest {
     String inputJson = objectMapper.writeValueAsString(input);
 
     RequestBuilder request = MockMvcRequestBuilders
-            .post("/elements/")
-            .content(inputJson)
-            .contentType(MediaType.APPLICATION_JSON);
+        .post("/elements/")
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
-            .perform(request)
-            .andExpect(jsonPath("$.id").value(collection.getId().toString()))
-            .andExpect(jsonPath("$.name").value(collection.getName().getValue()))
-            .andExpect(jsonPath("$.link").doesNotExist())
-            .andExpect(jsonPath("$.description").value(
-                    collection.getDescription().getValue())
-            )
-            .andExpect(jsonPath("$.created").value(collection.getCreated().toString()))
-            .andExpect(jsonPath("$.updated").doesNotExist())
-            .andExpect(jsonPath("$.trashed").doesNotExist())
-            .andExpect(status().isCreated());
+        .perform(request)
+        .andExpect(jsonPath("$.id").value(collection.getId().toString()))
+        .andExpect(jsonPath("$.name").value(collection.getName().getValue()))
+        .andExpect(jsonPath("$.link").doesNotExist())
+        .andExpect(jsonPath("$.description").value(
+            collection.getDescription().getValue())
+        )
+        .andExpect(jsonPath("$.created").value(collection.getCreated().toString()))
+        .andExpect(jsonPath("$.updated").doesNotExist())
+        .andExpect(jsonPath("$.trashed").doesNotExist())
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -229,13 +231,13 @@ public class ElementControllerTest {
     Collection collection = ObjectMother.generateRandomCollectionWithParent();
 
     Mockito.when(elementService.saveElementWithParent(
-            Mockito.argThat((SaveElementDto dto) -> {
-              Assert.assertEquals(dto.getName(), collection.getName());
-              Assert.assertEquals(dto.getDescription(), collection.getDescription());
-              Assert.assertNull(dto.getLink());
-              return true;
-            }),
-            Mockito.argThat((UUID id) -> id.equals(collection.getParentCollection().getId()))
+        Mockito.argThat((SaveElementDto dto) -> {
+          Assert.assertEquals(dto.getName(), collection.getName());
+          Assert.assertEquals(dto.getDescription(), collection.getDescription());
+          Assert.assertNull(dto.getLink());
+          return true;
+        }),
+        Mockito.argThat((UUID id) -> id.equals(collection.getParentCollection().getId()))
     )).thenReturn(collection);
 
     Map<String, String> input = new HashMap<>();
@@ -246,23 +248,23 @@ public class ElementControllerTest {
     String inputJson = objectMapper.writeValueAsString(input);
 
     RequestBuilder request = MockMvcRequestBuilders
-            .post("/elements/" + collection.getParentCollection().getId())
-            .content(inputJson)
-            .contentType(MediaType.APPLICATION_JSON);
+        .post("/elements/" + collection.getParentCollection().getId())
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
-            .perform(request)
-            .andExpect(jsonPath("$.id").value(collection.getId().toString()))
-            .andExpect(jsonPath("$.parent_id").value(
-                            collection.getParentCollection().getId().toString()
-                    )
+        .perform(request)
+        .andExpect(jsonPath("$.id").value(collection.getId().toString()))
+        .andExpect(jsonPath("$.parent_id").value(
+            collection.getParentCollection().getId().toString()
             )
-            .andExpect(jsonPath("$.name").value(collection.getName().getValue()))
-            .andExpect(jsonPath("$.description").value(collection.getDescription().getValue()))
-            .andExpect(jsonPath("$.created").value(collection.getCreated().toString()))
-            .andExpect(jsonPath("$.updated").doesNotExist())
-            .andExpect(jsonPath("$.trashed").doesNotExist())
-            .andExpect(status().isCreated());
+        )
+        .andExpect(jsonPath("$.name").value(collection.getName().getValue()))
+        .andExpect(jsonPath("$.description").value(collection.getDescription().getValue()))
+        .andExpect(jsonPath("$.created").value(collection.getCreated().toString()))
+        .andExpect(jsonPath("$.updated").doesNotExist())
+        .andExpect(jsonPath("$.trashed").doesNotExist())
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -274,12 +276,13 @@ public class ElementControllerTest {
     String inputJson = objectMapper.writeValueAsString(input);
 
     RequestBuilder request = MockMvcRequestBuilders
-            .post("/elements/")
-            .content(inputJson)
-            .contentType(MediaType.APPLICATION_JSON);
+        .post("/elements/")
+        .content(inputJson)
+        .contentType(MediaType.APPLICATION_JSON);
 
     mockMvc
-            .perform(request)
-            .andExpect(status().isUnprocessableEntity());
+        .perform(request)
+        .andExpect(status().isUnprocessableEntity());
   }
+
 }
