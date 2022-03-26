@@ -17,13 +17,15 @@ public class TabTest {
     Name name = ObjectMother.generateRandomName();
     URL link = ObjectMother.generateRandomLink();
     Description description = ObjectMother.generateRandomDescription();
-
-    Tab tab = Tab.createTab(id, name, link, description);
+    Access creator = ObjectMother.generateRandomAccess();
+    Tab tab = Tab.createTab(id, name, link, description, creator);
 
     Assert.assertEquals(id, tab.getId());
     Assert.assertEquals(name, tab.getName());
     Assert.assertEquals(link, tab.getLink());
     Assert.assertEquals(description, tab.getDescription());
+    Assert.assertEquals(1, tab.getAccesses().size());
+    Assert.assertEquals(creator, tab.getAccesses().get(0));
     Assert.assertEquals(
         tab.getCreated().toEpochSecond(ZoneOffset.UTC),
         LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -38,8 +40,9 @@ public class TabTest {
     UUID parentId = UUID.randomUUID();
     Name parentName = ObjectMother.generateRandomName();
     Description parentDescription = ObjectMother.generateRandomDescription();
+    Access creator = ObjectMother.generateRandomAccess();
     Collection parentCollection = Collection.createCollection(parentId,
-        parentName, parentDescription);
+        parentName, parentDescription, creator);
 
     UUID tabId = UUID.randomUUID();
     Name tabName = ObjectMother.generateRandomName();
@@ -69,7 +72,8 @@ public class TabTest {
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
         ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
     Name randomName = ObjectMother.generateRandomName();
     tab.rename(randomName);
@@ -87,7 +91,8 @@ public class TabTest {
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
         ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
     URL randomLink = ObjectMother.generateRandomLink();
     tab.changeLink(randomLink);
@@ -105,7 +110,8 @@ public class TabTest {
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
         ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
     Description randomDescription = ObjectMother.generateRandomDescription();
     tab.changeDescription(randomDescription);
@@ -123,7 +129,8 @@ public class TabTest {
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
         ObjectMother.generateRandomLink(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
     tab.moveToBin();
     Assert.assertEquals(

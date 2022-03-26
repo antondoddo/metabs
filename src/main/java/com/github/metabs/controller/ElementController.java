@@ -34,7 +34,7 @@ public class ElementController {
   public ResponseEntity<Element> getElementById(@PathVariable UUID id) {
     try {
       Optional<Element> element = elementService.getElementById(id);
-      if (element.isEmpty()) {
+      if (!element.isPresent()) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
       return new ResponseEntity<>(element.get(), HttpStatus.OK);

@@ -15,12 +15,14 @@ public class CollectionTest {
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
     Description description = ObjectMother.generateRandomDescription();
-
-    Collection collection = Collection.createCollection(id, name, description);
+    Access access = ObjectMother.generateRandomAccess();
+    Collection collection = Collection.createCollection(id, name, description, access);
 
     Assert.assertEquals(id, collection.getId());
     Assert.assertEquals(name, collection.getName());
     Assert.assertEquals(description, collection.getDescription());
+    Assert.assertEquals(1, collection.getAccesses().size());
+    Assert.assertEquals(access, collection.getAccesses().get(0));
     Assert.assertEquals(
         collection.getCreated().toEpochSecond(ZoneOffset.UTC),
         LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -36,8 +38,9 @@ public class CollectionTest {
     UUID parentId = UUID.randomUUID();
     Name parentName = ObjectMother.generateRandomName();
     Description parentDescription = ObjectMother.generateRandomDescription();
+    Access access = ObjectMother.generateRandomAccess();
     Collection parentCollection = Collection.createCollection(parentId,
-        parentName, parentDescription);
+        parentName, parentDescription, access);
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
@@ -49,6 +52,8 @@ public class CollectionTest {
     Assert.assertEquals(name, collection.getName());
     Assert.assertSame(parentCollection, collection.getParentCollection());
     Assert.assertEquals(description, collection.getDescription());
+    Assert.assertEquals(1, collection.getAccesses().size());
+    Assert.assertEquals(access, collection.getAccesses().get(0));
     Assert.assertEquals(
         collection.getCreated().toEpochSecond(ZoneOffset.UTC),
         LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -63,7 +68,8 @@ public class CollectionTest {
     Collection collection = Collection.createCollection(
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
 
     Name randomName = ObjectMother.generateRandomName();
@@ -82,7 +88,8 @@ public class CollectionTest {
     Collection collection = Collection.createCollection(
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
 
     Description randomDescription = ObjectMother.generateRandomDescription();
@@ -101,7 +108,8 @@ public class CollectionTest {
     Collection collection = Collection.createCollection(
         UUID.randomUUID(),
         ObjectMother.generateRandomName(),
-        ObjectMother.generateRandomDescription()
+        ObjectMother.generateRandomDescription(),
+        ObjectMother.generateRandomAccess()
     );
 
     collection.moveToBin();

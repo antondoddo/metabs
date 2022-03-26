@@ -7,7 +7,7 @@ public class AccessTest {
 
   @Test
   public void shouldCreateAccess() {
-    User user = new User();
+    User user = ObjectMother.generateRandomUser();
     Access access = new Access(Role.ADMIN, user);
     Assert.assertSame(access.getUser(), user);
     Assert.assertEquals(access.getRole(), Role.ADMIN);

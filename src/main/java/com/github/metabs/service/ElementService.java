@@ -5,6 +5,7 @@ import com.github.metabs.model.Element;
 import com.github.metabs.model.Tab;
 import com.github.metabs.repository.CollectionRepository;
 import com.github.metabs.repository.ElementRepository;
+import com.github.metabs.service.exception.CreatorNotAllowedException;
 import com.github.metabs.service.exception.ParentNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,14 +37,16 @@ public class ElementService {
       element = Collection.createCollection(
           id,
           dto.getName(),
-          dto.getDescription()
+          dto.getDescription(),
+          dto.getCreator()
       );
     } else {
       element = Tab.createTab(
           id,
           dto.getName(),
           dto.getLink(),
-          dto.getDescription()
+          dto.getDescription(),
+          dto.getCreator()
       );
     }
     return elementRepository.save(element);
@@ -52,26 +55,32 @@ public class ElementService {
   public Element saveElementWithParent(
       SaveElementDto dto,
       UUID parentCollectionId
-  ) throws ParentNotFoundException {
-    Optional<Collection> parentCollection = collectionRepository.findById(parentCollectionId);
-    if (!parentCollection.isPresent()) {
+  ) throws ParentNotFoundException, CreatorNotAllowedException {
+    Optional<Collection> parentCollectionOptional = collectionRepository.findById(
+        parentCollectionId
+    );
+    if (!parentCollectionOptional.isPresent()) {
       throw ParentNotFoundException.parentNotFound();
     }
     Element element;
-
     UUID id = UUID.randomUUID();
-    if (dto.getLink() == null) {
+    Collection parentCollection = parentCollectionOptional.get();
 
+    if (!parentCollection.canBeEditedBy(dto.getCreator())) {
+      throw CreatorNotAllowedException.notAllowed();
+    }
+
+    if (dto.getLink() == null) {
       element = Collection.createCollectionWithParent(
           id,
-          parentCollection.get(),
+          parentCollection,
           dto.getName(),
           dto.getDescription()
       );
     } else {
       element = Tab.createTabWithParent(
           id,
-          parentCollection.get(),
+          parentCollectionOptional.get(),
           dto.getName(),
           dto.getLink(),
           dto.getDescription()

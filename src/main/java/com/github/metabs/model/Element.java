@@ -64,6 +64,10 @@ public abstract class Element {
     return description;
   }
 
+  public List<Access> getAccesses() {
+    return accesses;
+  }
+
   public void rename(Name name) {
     this.name = name;
     this.updated = LocalDateTime.now();

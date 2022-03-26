@@ -28,7 +28,7 @@ public class HomeController {
 
     try {
       Optional<Integer> neo4jResult = neo4jClient.query("RETURN 1").fetchAs(Integer.class).one();
-      if (neo4jResult.isEmpty() || neo4jResult.get() != 1) {
+      if (!neo4jResult.isPresent() || neo4jResult.get() != 1) {
         check = "not healthy";
         status = HttpStatus.INTERNAL_SERVER_ERROR;
       }

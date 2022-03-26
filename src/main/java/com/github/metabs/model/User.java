@@ -9,4 +9,18 @@ public class User {
 
   @Id
   private UUID id;
+  private String firstname;
+  private String lastname;
+
+  public User(UUID id) {
+    this.id = id;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 }

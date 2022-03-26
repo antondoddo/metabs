@@ -20,13 +20,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(MockitoJUnitRunner.class)
 public class HomeControllerTest {
 
-  private MockMvc mockMvc;
-
   @Mock
   Neo4jClient neo4jClient;
-
   @InjectMocks
   HomeController homeController;
+  private MockMvc mockMvc;
 
   @Before
   public void setup() {
@@ -46,14 +44,14 @@ public class HomeControllerTest {
 
 
     MockHttpServletResponse response = mockMvc
-            .perform(MockMvcRequestBuilders.get("/"))
-            .andReturn()
-            .getResponse();
+        .perform(MockMvcRequestBuilders.get("/"))
+        .andReturn()
+        .getResponse();
 
     Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
     Assert.assertEquals(
-            "{\"neo4j\":\"healthy\",\"name\":\"metabs\"}",
-            response.getContentAsString()
+        "{\"neo4j\":\"healthy\",\"name\":\"metabs\"}",
+        response.getContentAsString()
     );
   }
 
@@ -61,19 +59,19 @@ public class HomeControllerTest {
   public void shouldReturnUnhealthyResponse() throws Exception {
 
     Mockito.when(
-            neo4jClient.query("RETURN 1")
+        neo4jClient.query("RETURN 1")
     ).thenThrow(new RuntimeException("ops!"));
 
 
     MockHttpServletResponse response = mockMvc
-            .perform(MockMvcRequestBuilders.get("/"))
-            .andReturn()
-            .getResponse();
+        .perform(MockMvcRequestBuilders.get("/"))
+        .andReturn()
+        .getResponse();
 
     Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatus());
     Assert.assertEquals(
-            "{\"neo4j\":\"not healthy\",\"name\":\"metabs\"}",
-            response.getContentAsString()
+        "{\"neo4j\":\"not healthy\",\"name\":\"metabs\"}",
+        response.getContentAsString()
     );
   }
 }

@@ -8,6 +8,10 @@ import com.github.metabs.model.vo.Name;
 import com.github.metabs.service.SaveElementDto;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class ObjectMother {
@@ -30,6 +34,32 @@ public class ObjectMother {
     return new Description("");
   }
 
+  public static Role generateRandomRole() {
+    List<Role> values =
+        Collections.unmodifiableList(Arrays.asList(Role.values()));
+    Random random = new Random();
+    return values.get(random.nextInt(values.size()));
+  }
+
+  public static User generateRandomUser() {
+    return new User(UUID.randomUUID());
+  }
+
+  public static Access generateRandomAccess() {
+    return new Access(
+        ObjectMother.generateRandomRole(),
+        ObjectMother.generateRandomUser()
+    );
+  }
+
+
+  public static Access generateAdminAccess() {
+    return new Access(
+        Role.ADMIN,
+        ObjectMother.generateRandomUser()
+    );
+  }
+
   public static Tab generateRandomTab()
       throws NameException,
       MalformedURLException,
@@ -39,8 +69,8 @@ public class ObjectMother {
     Name name = ObjectMother.generateRandomName();
     URL link = ObjectMother.generateRandomLink();
     Description description = ObjectMother.generateRandomDescription();
-
-    return Tab.createTab(id, name, link, description);
+    Access creator = ObjectMother.generateRandomAccess();
+    return Tab.createTab(id, name, link, description, creator);
   }
 
   public static Tab generateRandomTabWithParent() throws
@@ -52,12 +82,7 @@ public class ObjectMother {
     URL link = ObjectMother.generateRandomLink();
     Description description = ObjectMother.generateRandomDescription();
 
-    UUID idParent = UUID.randomUUID();
-    Name nameParent = ObjectMother.generateRandomName();
-    Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(
-        idParent, nameParent, descriptionParent
-    );
+    Collection collectionParent = ObjectMother.generateRandomCollection();
 
     return Tab.createTabWithParent(id, collectionParent, name, link, description);
   }
@@ -68,8 +93,18 @@ public class ObjectMother {
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
     Description description = ObjectMother.generateRandomDescription();
+    Access access = ObjectMother.generateRandomAccess();
+    return Collection.createCollection(id, name, description, access);
+  }
 
-    return Collection.createCollection(id, name, description);
+
+  public static Collection generateRandomCollection(Access access) throws NameException,
+      DescriptionException {
+
+    UUID id = UUID.randomUUID();
+    Name name = ObjectMother.generateRandomName();
+    Description description = ObjectMother.generateRandomDescription();
+    return Collection.createCollection(id, name, description, access);
   }
 
   public static SaveElementDto generateSaveElementRequestDto() throws
@@ -93,12 +128,7 @@ public class ObjectMother {
       NameException,
       DescriptionException {
 
-    UUID idParent = UUID.randomUUID();
-    Name nameParent = ObjectMother.generateRandomName();
-    Description descriptionParent = ObjectMother.generateRandomDescription();
-    Collection collectionParent = Collection.createCollection(
-        idParent, nameParent, descriptionParent
-    );
+    Collection collectionParent = ObjectMother.generateRandomCollection();
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
@@ -106,5 +136,4 @@ public class ObjectMother {
 
     return Collection.createCollectionWithParent(id, collectionParent, name, description);
   }
-
 }

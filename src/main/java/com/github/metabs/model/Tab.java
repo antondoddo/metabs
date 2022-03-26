@@ -5,6 +5,8 @@ import com.github.metabs.model.vo.Name;
 import com.github.metabs.model.vo.converter.UrlConverter;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -21,6 +23,7 @@ public class Tab extends Element {
       Name name,
       URL link,
       Description description,
+      List<Access> accesses,
       LocalDateTime created,
       LocalDateTime updated,
       LocalDateTime trashed
@@ -30,6 +33,7 @@ public class Tab extends Element {
     this.name = name;
     this.link = link;
     this.description = description;
+    this.accesses = accesses;
     this.created = created;
     this.updated = updated;
     this.trashed = trashed;
@@ -40,14 +44,18 @@ public class Tab extends Element {
       UUID id,
       Name name,
       URL link,
-      Description description
+      Description description,
+      Access creator
   ) {
+    List<Access> accesses = new ArrayList<>();
+    accesses.add(creator);
     return new Tab(
         id,
         null,
         name,
         link,
         description,
+        accesses,
         LocalDateTime.now(),
         null,
         null);
@@ -66,6 +74,7 @@ public class Tab extends Element {
         name,
         link,
         description,
+        parentCollection.getAccesses(),
         LocalDateTime.now(),
         null,
         null);

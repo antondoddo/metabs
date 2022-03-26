@@ -1,5 +1,6 @@
 package com.github.metabs.service;
 
+import com.github.metabs.model.Access;
 import com.github.metabs.model.ObjectMother;
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
@@ -30,5 +31,12 @@ public class SaveElementDtoTest {
     URL link = ObjectMother.generateRandomLink();
     saveElementDto.setLink(link);
     Assert.assertEquals(link, saveElementDto.getLink());
+  }
+
+  @Test
+  public void shouldChangeCreator() throws Exception {
+    Access creator = ObjectMother.generateRandomAccess();
+    saveElementDto.setCreator(creator);
+    Assert.assertEquals(creator, saveElementDto.getCreator());
   }
 }
