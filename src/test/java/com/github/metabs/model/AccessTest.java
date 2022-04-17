@@ -6,7 +6,7 @@ import org.junit.Test;
 public class AccessTest {
 
   @Test
-  public void shouldCreateAccess() {
+  public void shouldCreateAccess() throws Exception {
     User user = ObjectMother.generateRandomUser();
     Access access = new Access(Role.ADMIN, user);
     Assert.assertSame(access.getUser(), user);

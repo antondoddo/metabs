@@ -1,18 +1,17 @@
 package com.github.metabs.model.vo;
 
-import com.github.metabs.model.exception.NameException;
+import com.github.metabs.model.exception.PasswordException;
 
-public class Name {
+public class Password {
 
   private final String value;
 
-
-  public Name(String value) throws NameException {
+  public Password(String value) throws PasswordException {
     if (value == null || value.isEmpty()) {
-      throw NameException.empty();
+      throw PasswordException.passwordEmpty();
     }
     if (value.length() > 81) {
-      throw NameException.tooLong();
+      throw PasswordException.passwordNotValid();
     }
     this.value = value;
   }
@@ -29,7 +28,7 @@ public class Name {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    Name objCasted = (Name) obj;
+    Password objCasted = (Password) obj;
     return this.value.equals(objCasted.value);
   }
 }

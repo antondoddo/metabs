@@ -1,18 +1,17 @@
 package com.github.metabs.model.vo;
 
-import com.github.metabs.model.exception.NameException;
+import com.github.metabs.model.exception.UsernameException;
 
-public class Name {
+public class Username {
 
   private final String value;
 
-
-  public Name(String value) throws NameException {
+  public Username(String value) throws UsernameException {
     if (value == null || value.isEmpty()) {
-      throw NameException.empty();
+      throw UsernameException.usernameEmpty();
     }
-    if (value.length() > 81) {
-      throw NameException.tooLong();
+    if (value.length() > 41) {
+      throw UsernameException.usernameTooLong();
     }
     this.value = value;
   }
@@ -29,7 +28,7 @@ public class Name {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    Name objCasted = (Name) obj;
+    Username objCasted = (Username) obj;
     return this.value.equals(objCasted.value);
   }
 }

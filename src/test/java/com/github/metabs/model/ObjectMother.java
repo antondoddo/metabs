@@ -3,8 +3,12 @@ package com.github.metabs.model;
 import com.github.javafaker.Faker;
 import com.github.metabs.model.exception.DescriptionException;
 import com.github.metabs.model.exception.NameException;
+import com.github.metabs.model.exception.PasswordException;
+import com.github.metabs.model.exception.UsernameException;
 import com.github.metabs.model.vo.Description;
 import com.github.metabs.model.vo.Name;
+import com.github.metabs.model.vo.Password;
+import com.github.metabs.model.vo.Username;
 import com.github.metabs.service.SaveElementDto;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,6 +24,14 @@ public class ObjectMother {
 
   public static Name generateRandomName() throws NameException {
     return new Name(faker.superhero().name());
+  }
+
+  public static Username generateRandomUsername() throws UsernameException {
+    return new Username(faker.animal().name());
+  }
+
+  public static Password generateRandomPassword() throws PasswordException {
+    return new Password(faker.animal().name());
   }
 
   public static URL generateRandomLink() throws MalformedURLException {
@@ -41,11 +53,17 @@ public class ObjectMother {
     return values.get(random.nextInt(values.size()));
   }
 
-  public static User generateRandomUser() {
-    return new User(UUID.randomUUID());
+  public static User generateRandomUser() throws NameException, UsernameException, PasswordException {
+    return User.createUser(
+        UUID.randomUUID(),
+        ObjectMother.generateRandomName(),
+        ObjectMother.generateRandomName(),
+        ObjectMother.generateRandomUsername(),
+        ObjectMother.generateRandomPassword()
+    );
   }
 
-  public static Access generateRandomAccess() {
+  public static Access generateRandomAccess() throws NameException, UsernameException, PasswordException {
     return new Access(
         ObjectMother.generateRandomRole(),
         ObjectMother.generateRandomUser()
@@ -53,7 +71,7 @@ public class ObjectMother {
   }
 
 
-  public static Access generateAdminAccess() {
+  public static Access generateAdminAccess() throws NameException, UsernameException, PasswordException {
     return new Access(
         Role.ADMIN,
         ObjectMother.generateRandomUser()
@@ -63,7 +81,7 @@ public class ObjectMother {
   public static Tab generateRandomTab()
       throws NameException,
       MalformedURLException,
-      DescriptionException {
+      DescriptionException, UsernameException, PasswordException {
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
@@ -76,7 +94,7 @@ public class ObjectMother {
   public static Tab generateRandomTabWithParent() throws
       NameException,
       MalformedURLException,
-      DescriptionException {
+      DescriptionException, UsernameException, PasswordException {
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
     URL link = ObjectMother.generateRandomLink();
@@ -88,7 +106,7 @@ public class ObjectMother {
   }
 
   public static Collection generateRandomCollection() throws NameException,
-      DescriptionException {
+      DescriptionException, UsernameException, PasswordException {
 
     UUID id = UUID.randomUUID();
     Name name = ObjectMother.generateRandomName();
@@ -126,7 +144,7 @@ public class ObjectMother {
 
   public static Collection generateRandomCollectionWithParent() throws
       NameException,
-      DescriptionException {
+      DescriptionException, UsernameException, PasswordException {
 
     Collection collectionParent = ObjectMother.generateRandomCollection();
 
